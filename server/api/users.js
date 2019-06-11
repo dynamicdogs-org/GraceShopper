@@ -17,7 +17,6 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-//get single user
 router.get('/:userId', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
@@ -26,6 +25,42 @@ router.get('/:userId', async (req, res, next) => {
     } else {
       res.json(user)
     }
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/', async (req, res, next) => {
+  try {
+    const user = await User.create(req.body)
+    res.status(201).json(user)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.put('/:userId', async (req, res, next) => {
+  try {
+    const [numAffectedRows, [updatedUser]] = await User.update(req.body, {
+      where: {
+        id: req.params.userId
+      },
+      returning: true
+    })
+    res.status(200).json(updatedUser)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/:userId', async (req, res, next) => {
+  try {
+    const numAffectedRows = await User.destroy({
+      where: {
+        id: req.params.userId
+      }
+    })
+    res.status(204).json(numAffectedRows)
   } catch (error) {
     next(error)
   }
