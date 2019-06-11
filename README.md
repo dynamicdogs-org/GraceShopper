@@ -1,10 +1,9 @@
 # Dynamic Dogs - Grace Shopper
 
+Dennis Chirchenko
+Terence Helsel
+Feng Jiang
 Kevin Lam
-
-Teren ce
-
-Dennis
 
 _Good things come in pairs_
 
