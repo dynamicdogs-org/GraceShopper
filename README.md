@@ -1,9 +1,12 @@
 # Dynamic Dogs - Grace Shopper
 
+Team Members
+=================
 Dennis Chirchenko
 Terence Helsel
 Feng Jiang
 Kevin Lam
+=================
 
 _Good things come in pairs_
 
