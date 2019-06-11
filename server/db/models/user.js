@@ -6,7 +6,24 @@ const User = db.define('user', {
   email: {
     type: Sequelize.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   password: {
     type: Sequelize.STRING,
