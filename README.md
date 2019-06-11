@@ -1,12 +1,11 @@
 # Dynamic Dogs - Grace Shopper
 
-Team Members
-=================
-Dennis Chirchenko
-Terence Helsel
-Feng Jiang
-Kevin Lam
-=================
+# Team Members
+
+* Dennis Chirchenko
+* Terence Helsel
+* Feng Jiang
+* # Kevin Lam
 
 Dennis was messing with this stuff again in Dennis1 branch
 
