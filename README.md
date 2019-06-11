@@ -5,7 +5,7 @@
 * Dennis Chirchenko
 * Terence Helsel
 * Feng Jiang
-* # Kevin Lam
+* Kevin Lam
 
 Dennis was messing with this stuff again in Dennis1 branch
 
