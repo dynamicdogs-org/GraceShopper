@@ -8,6 +8,8 @@ Feng Jiang
 Kevin Lam
 =================
 
+Dennis was messing with this stuff again in Dennis1 branch
+
 _Good things come in pairs_
 
 Looking to mix up a backend with express/sequelize and a frontend with react/redux? That's `boilermaker`!
