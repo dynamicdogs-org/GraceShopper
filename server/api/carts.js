@@ -26,3 +26,35 @@ router.get('/:userId', async (req, res, next) => {
     next(error)
   }
 })
+
+router.delete('/:userId/:productId', async (req, res, next) => {
+  try {
+    await Cart.destroy({
+      where: {
+        userId: req.params.userId,
+        productId: req.params.productId
+      }
+    })
+    res.status(204).send('product removed from cart')
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.put('/:userId/:productId', async (req, res, next) => {
+  try {
+    const [numAffectedRows, [updatedQuantity]] = await Cart.update(
+      {quantity: req.body.quantity},
+      {
+        where: {
+          userId: req.params.userId,
+          productId: req.params.productId
+        },
+        returning: true
+      }
+    )
+    res.status(200).json(updatedQuantity)
+  } catch (error) {
+    next(error)
+  }
+})
