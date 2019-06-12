@@ -19,13 +19,9 @@ router.post('/', async (req, res, next) => {
 
 router.get('/:userId', async (req, res, next) => {
   try {
-    const cart = await User.findOne({
-      where: {
-        id: req.params.userId
-      },
-      include: [{model: Product, through: Cart}]
-    })
-    res.json(cart.products)
+    const user = await User.findByPk(req.params.userId)
+    const prods = await user.getProducts()
+    res.json(prods)
   } catch (error) {
     next(error)
   }

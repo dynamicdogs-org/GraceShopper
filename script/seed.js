@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {User, Product} = require('../server/db/models')
+const {User, Product, Cart} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
@@ -125,9 +125,9 @@ async function seed() {
     stock: 'In stock'
   })
 
-  await prod1.addUser(user1)
-  await prod2.addUser(user1)
-  await prod3.addUser(user2)
+  await user1.addProduct(prod1)
+  await user2.addProduct(prod2)
+  await user1.addProduct(prod3)
   console.log(`Created Cart Joint Table Successfully`)
 
   console.log(`Seeded Successfully`)
