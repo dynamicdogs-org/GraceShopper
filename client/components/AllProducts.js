@@ -1,44 +1,47 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import redux from 'react-redux'
-import {connect} from 'react-redux'
+import redux, {connect} from 'react-redux'
 import {getAllProductsThunk} from '../store/product'
-//import {fakeThunk} from '../store/product'
+import {Link} from 'react-router-dom'
 
-class DisconnectedAllProducts extends Component {
+class AllProducts extends Component {
   componentDidMount() {
-    //console.log("fake Thunk : ", fakeThunk);
-    console.log('this.props.products: ', this.props)
-
-    console.log(this.props.getAllProducts)
-    // this.props.
-    //this.props.fakeThunk();
+    this.props.getAllProducts()
   }
 
   render() {
-    return <h1>This is our All Products page!</h1>
+    return this.props.state.product.length > 0 ? (
+      <div>
+        <h1>This is our All Products page!</h1>
+        <ul>
+          {this.props.state.product.map(element => {
+            return (
+              <li key={element.id}>
+                <Link to={`/products/${element.id}`}>{element.name}</Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    ) : (
+      <div>No products at this time...</div>
+    )
   }
 }
 
 //Container
 
 const mapStateToProps = function(state) {
+  console.log('mapstate', state)
   return {
-    products: state.products
+    state: state
   }
 }
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    //fakeThunk: () => dispatch(fakeThunk()),
     getAllProducts: () => dispatch(getAllProductsThunk())
   }
 }
-const AllProducts = connect(mapStateToProps, mapDispatchToProps)(
-  DisconnectedAllProducts
-)
-export default AllProducts
 
-// module.exports = {
-//   AllProducts
-// }
+export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)
