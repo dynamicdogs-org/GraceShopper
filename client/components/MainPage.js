@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import redux from 'react-redux'
+import {BrowserRouter, Switch, Route, Link} from 'react-router-dom'
 import {Login} from '../components'
 import AllProducts from '../components/AllProducts'
 export class MainPage extends Component {
@@ -17,4 +18,4 @@ export class MainPage extends Component {
   }
 }
 
-//Container
+//   Container
