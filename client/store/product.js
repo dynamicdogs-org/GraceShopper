@@ -1,10 +1,11 @@
 import axios from 'axios'
 
-//initial state:
+// initial state:
 const initialState = []
 
 //ACTION TYPES:
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS'
+const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT'
 
 //ACTION CREATORS :
 const getAllProducts = products => {
@@ -14,16 +15,32 @@ const getAllProducts = products => {
   }
 }
 
+const getSingleProduct = product => {
+  return {
+    type: GET_SINGLE_PRODUCT,
+    payload: product
+  }
+}
+
 //THUNKS:
 export const getAllProductsThunk = function() {
-  console.log('getAllProductsThunk was invoked!')
   return async function(dispatch) {
     try {
       const {data} = await axios.get('/api/products')
-      console.log('thunk data', data)
       dispatch(getAllProducts(data))
     } catch (error) {
       console.log(error)
+    }
+  }
+}
+
+export const getSingleProductThunk = function(productId) {
+  return async function(dispatch) {
+    try {
+      const {data} = await axios.get(`/api/products/${productId}`)
+      dispatch(getSingleProduct(data))
+    } catch (error) {
+      console.error(error)
     }
   }
 }
@@ -32,7 +49,8 @@ export const getAllProductsThunk = function() {
 export const product = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_PRODUCTS:
-      console.log('payload', action.payload)
+      return action.payload
+    case GET_SINGLE_PRODUCT:
       return action.payload
     default:
       return state
