@@ -32,7 +32,6 @@ class AllProducts extends Component {
 //Container
 
 const mapStateToProps = function(state) {
-  console.log('mapstate', state)
   return {
     state: state
   }
