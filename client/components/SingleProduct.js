@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import axios from 'axios'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {getSingleProductThunk} from '../store/product'
@@ -9,7 +8,7 @@ class SingleProduct extends Component {
     const productId = this.props.match.params.productId
     this.props.getSingleProduct(productId)
   }
-
+  
   render() {
     const product = this.props.products
     return (

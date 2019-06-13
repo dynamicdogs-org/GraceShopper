@@ -17,6 +17,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+//Only available to admin
 router.get('/:userId', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
@@ -30,6 +31,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
+//Only available to admin
 router.post('/', async (req, res, next) => {
   try {
     const user = await User.create(req.body)
@@ -39,6 +41,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+//Only available to admin
 router.put('/:userId', async (req, res, next) => {
   try {
     const [numAffectedRows, [updatedUser]] = await User.update(req.body, {
@@ -53,6 +56,7 @@ router.put('/:userId', async (req, res, next) => {
   }
 })
 
+//Only available to admin
 router.delete('/:userId', async (req, res, next) => {
   try {
     const numAffectedRows = await User.destroy({
