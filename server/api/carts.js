@@ -2,6 +2,15 @@ const {Cart, User, Product} = require('../db/models')
 const router = require('express').Router()
 module.exports = router
 
+//Will create new component for UnAuthorized request
+router.use('/:userId', (req, res, next) => {
+  if (+req.user.id !== +req.params.userId) {
+    res.send('Youre not authorized to perform this action')
+  }
+  next()
+})
+
+//Get All Cart Info for a particular user
 router.get('/:userId', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
@@ -12,7 +21,8 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+//Add Item and User to the Cart Table
+router.post('/:userId/:productId', async (req, res, next) => {
   try {
     //Might want to change to update quantity instead of creating new
     const [prod, wasCreated] = await Cart.findOrCreate({
