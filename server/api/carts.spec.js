@@ -32,31 +32,31 @@ describe('Cart routes', () => {
       const prod1 = await Product.create({
         name: 'Huskys Favorite Food',
         description: 'Dog Food: Vegetable',
-        price: 50.55,
+        price: 5055,
         image:
           'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
         tags: 'food',
-        stock: 'In stock'
+        stock: 10
       })
 
       const prod2 = await Product.create({
         name: 'Huskys Favorite Food2',
         description: 'Dog Food: Vegetable2',
-        price: 30.22,
+        price: 3022,
         image:
           'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
         tags: 'food',
-        stock: 'In stock'
+        stock: 15
       })
 
       const prod3 = await Product.create({
         name: 'Huskys Favorite Food3',
         description: 'Dog Food: Vegetable3',
-        price: 25.23,
+        price: 2523,
         image:
           'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
         tags: 'food',
-        stock: 'In stock'
+        stock: 20
       })
 
       const cart1 = await Cart.create({

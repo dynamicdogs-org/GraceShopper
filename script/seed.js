@@ -44,38 +44,38 @@ async function seed() {
     Product.create({
       name: 'Blue Buffalo',
       description: 'Dog Food: Chicken',
-      price: 1,
+      price: 1000,
       image:
         'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
       tags: 'food',
-      stock: 'In stock'
+      stock: 5
     }),
     Product.create({
       name: 'Red Buffalo',
       description: 'Dog Food: Chicken',
-      price: 3,
+      price: 3000,
       image:
         'https://images.unsplash.com/photo-1529429617124-95b109e86bb8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
       tags: 'food',
-      stock: 'In stock'
+      stock: 7
     }),
     Product.create({
       name: 'Taste of the Wild',
       description: 'Dog Food: Chicken',
-      price: 10,
+      price: 1000,
       image:
         'https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
       tags: 'food',
-      stock: 'In stock'
+      stock: 10
     }),
     Product.create({
       name: 'American Journey',
       description: 'Dog Food: Vegetable',
-      price: 20.5,
+      price: 2050,
       image:
         'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
       tags: 'food',
-      stock: 'In stock'
+      stock: 20
     })
   ])
 
@@ -98,31 +98,31 @@ async function seed() {
   const prod1 = await Product.create({
     name: 'Huskys Favorite Food',
     description: 'Dog Food: Vegetable',
-    price: 50.55,
+    price: 5055,
     image:
       'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
     tags: 'food',
-    stock: 'In stock'
+    stock: 15
   })
 
   const prod2 = await Product.create({
     name: 'Huskys Favorite Food2',
     description: 'Dog Food: Vegetable2',
-    price: 30.22,
+    price: 3022,
     image:
       'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
     tags: 'food',
-    stock: 'In stock'
+    stock: 6
   })
 
   const prod3 = await Product.create({
     name: 'Huskys Favorite Food3',
     description: 'Dog Food: Vegetable3',
-    price: 25.23,
+    price: 2523,
     image:
       'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
     tags: 'food',
-    stock: 'In stock'
+    stock: 19
   })
 
   await user1.addProduct(prod1)
