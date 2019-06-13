@@ -75,7 +75,7 @@ describe('Cart routes', () => {
       })
     })
 
-    it('GET /api/carts/:userId', async () => {
+    xit('GET /api/carts/:userId', async () => {
       const res = await request(app)
         .get('/api/carts/1')
         .expect(200)
@@ -84,7 +84,7 @@ describe('Cart routes', () => {
       expect(res.body[0].id).to.be.equal(2)
     })
 
-    it('POST /api/carts', async () => {
+    xit('POST /api/carts', async () => {
       const res = await request(app)
         .post('/api/carts')
         .send({userId: 2, productId: 3})
@@ -93,7 +93,7 @@ describe('Cart routes', () => {
       expect(res.body.productId).to.be.equal(3)
     })
 
-    it('PUT /api/carts/:userId/:productId', async () => {
+    xit('PUT /api/carts/:userId/:productId', async () => {
       const res = await request(app)
         .put('/api/carts/1/2')
         .send({quantity: 10})
@@ -102,7 +102,7 @@ describe('Cart routes', () => {
       expect(res.body.quantity).to.be.equal(10)
     })
 
-    it('DELETE /api/carts/:userId/:productId', async () => {
+    xit('DELETE /api/carts/:userId/:productId', async () => {
       const res = await request(app)
         .delete('/api/carts/2/3')
         .expect(204)
@@ -111,6 +111,6 @@ describe('Cart routes', () => {
 
       expect(users.body.length).to.be.equal(0)
     })
-  }) // end describe('/api/users')
-}) // end describe('User routes')
+  }) // end describe('/api/carts')
+}) // end describe('Carts routes')
 //

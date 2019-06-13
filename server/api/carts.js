@@ -4,7 +4,9 @@ module.exports = router
 
 //Will create new component for UnAuthorized request
 router.use('/:userId', (req, res, next) => {
-  if (+req.user.id !== +req.params.userId) {
+  if (!req.user) {
+    res.redirect('/login')
+  } else if (+req.user.id !== +req.params.userId) {
     res.send('Youre not authorized to perform this action')
   }
   next()
