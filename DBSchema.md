@@ -26,13 +26,14 @@ Cart Table Joint Table (User and Product)
 4.  Price (current)
 5.  Price (when added)
 
-Order
+Order Table - BelongsTo Users
+User Table - hasMany Orders
 
-1.  UserID - (Order belongs to a UserID - One User hasMany Order History)
-2.  AddressID -
-3.  Payment ID
+1.  userId - Foreign Key - Automatically generate by Sequlize
+2.  Address - payment from order form or user data (if available)
+3.  Payment ID - payment from order form or user data (if available)
 4.  Products: [product ids] - array of products
-5.  Order Status
+5.  Order Status - ENUM - [Submitted, Open, Pending, Shipped, Closed]
 
 Address
 

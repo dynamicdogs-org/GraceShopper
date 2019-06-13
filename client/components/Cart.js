@@ -1,24 +1,22 @@
-import react from 'react'
-import {Component} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
+import {getCartThunk} from '../store/cart'
 
-import {getCartThunk} from '../store/'
-
-class disconnectedCart extends Component() {
-  componentDidMount() {
-    console.log('Cart props: ', this.props)
-    //this.props.getCart(this.props.userId);
+class disconnectedCart extends React.Component {
+  componentDidMount = () => {
+    this.props.getCart(this.props.userId)
   }
 
   render() {
-    console.log('This.props: ', this.props)
+    console.log(this.props)
     return <div>This is User's cart</div>
   }
 }
 
 const mapStateToProps = state => {
   return {
-    userId: state.user.id
+    userId: state.user.id,
+    cart: state.cart
   }
 }
 
@@ -28,6 +26,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const Cart = connect(mapStateToProps)(mapDispatchToProps)(disconnectedCart)
-
-export default Cart
+export default connect(mapStateToProps, mapDispatchToProps)(disconnectedCart)
