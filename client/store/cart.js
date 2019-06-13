@@ -3,10 +3,10 @@ import axios from 'axios'
 const initialState = []
 
 //ACTION TYPES:
-GET_CART = 'GET_CART'
-DELETE_ITEM = 'DELETE_ITEM'
-ADD_ITEM = 'ADD_ITEM'
-CNANGE_QUANTITY = 'CHANGE_QUANTITY'
+const GET_CART = 'GET_CART'
+const DELETE_ITEM = 'DELETE_ITEM'
+const ADD_ITEM = 'ADD_ITEM'
+const CNANGE_QUANTITY = 'CHANGE_QUANTITY'
 
 //ACTION CREATORS:
 const getCart = products => {
