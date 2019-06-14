@@ -29,8 +29,8 @@ router.post('/:userId/:productId', async (req, res, next) => {
     //Might want to change to update quantity instead of creating new
     const [prod, wasCreated] = await Cart.findOrCreate({
       where: {
-        userId: req.body.userId,
-        productId: req.body.productId
+        userId: req.params.userId,
+        productId: req.params.productId
       }
     })
     res.status(201).json(prod)

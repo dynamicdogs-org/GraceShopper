@@ -1,22 +1,41 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getAllProductsThunk} from '../store/product'
+import {addItemToCartThunk} from '../store/cart'
 import {Link} from 'react-router-dom'
+import Button from '@material-ui/core/Button'
 
 class AllProducts extends Component {
   componentDidMount() {
     this.props.getAllProducts()
   }
 
+  handleAddToCart = (userId, productId) => {
+    this.props.addItem(userId, productId)
+  }
+
+  handleDeleteFrom = (userId, productId) => {}
+
   render() {
-    return this.props.state.product.length > 0 ? (
+    const {product, userId} = this.props
+    return product.length ? (
       <div>
         <h1>This is our All Products page!</h1>
         <ul>
-          {this.props.state.product.map(element => {
+          {product.map(prod => {
             return (
-              <li key={element.id}>
-                <Link to={`/products/${element.id}`}>{element.name}</Link>
+              <li key={prod.id}>
+                <Link to={`/products/${prod.id}`}>{prod.name}</Link>
+                {userId && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    onClick={() => this.handleAddToCart(userId, prod.id)}
+                  >
+                    Add to Cart
+                  </Button>
+                )}
               </li>
             )
           })}
@@ -32,13 +51,16 @@ class AllProducts extends Component {
 
 const mapStateToProps = function(state) {
   return {
-    state: state
+    product: state.product,
+    userId: state.user.id
   }
 }
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    getAllProducts: () => dispatch(getAllProductsThunk())
+    getAllProducts: () => dispatch(getAllProductsThunk()),
+    addItem: (userId, productId) =>
+      dispatch(addItemToCartThunk(userId, productId))
   }
 }
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {getCartThunk} from '../store/cart'
 
 class disconnectedCart extends React.Component {
@@ -8,8 +9,23 @@ class disconnectedCart extends React.Component {
   }
 
   render() {
-    console.log(this.props)
-    return <div>This is User's cart</div>
+    const {cart, userId} = this.props
+    return cart.length ? (
+      <div>
+        <h1>This is Your Cart!</h1>
+        <ul>
+          {cart.map((prod, index) => {
+            return (
+              <li key={index}>
+                <Link to={`/products/${prod.id}`}>{prod.name}</Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    ) : (
+      <div>No products at this time...</div>
+    )
   }
 }
 

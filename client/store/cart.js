@@ -16,6 +16,19 @@ const getCart = products => {
   }
 }
 
+const addItemToCart = newProd => {
+  return {
+    type: ADD_ITEM,
+    payload: newProd
+  }
+}
+
+const deleteItemFromCart = () => {
+  return {
+    type: DELETE_ITEM
+  }
+}
+
 //THUNKS:
 export const getCartThunk = userId => {
   return async function(dispatch) {
@@ -28,11 +41,25 @@ export const getCartThunk = userId => {
   }
 }
 
+export const addItemToCartThunk = (userId, productId) => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.post(`/api/cart/${userId}/${productId}`)
+      dispatch(addItemToCart(data))
+    } catch (error) {
+      console.log('TCL: addItemToCartThunk -> error', error)
+    }
+  }
+}
+
 //CART REDUCER:
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CART: {
       return action.payload
+    }
+    case ADD_ITEM: {
+      return [...state, action.payload]
     }
     default:
       return state
