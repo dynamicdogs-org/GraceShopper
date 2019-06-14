@@ -2,6 +2,10 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {getSingleProductThunk} from '../store/product'
+import Box from '@material-ui/core/Box'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import {GridList} from '@material-ui/core'
 
 class SingleProduct extends Component {
   componentDidMount() {
@@ -13,12 +17,22 @@ class SingleProduct extends Component {
     const product = this.props.products
     return (
       <div>
-        <h1>Single product page</h1>
-        <h3>{product.name}</h3>
-        <img src={product.image} />
-        <h4>{product.displayPrice}</h4>
-        <h5>{product.stockMessage}</h5>
-        <p>{product.description}</p>
+        {/* <h1>Single product page</h1> */}
+        <Container>
+          <GridList container direction="row">
+            <Grid item sm>
+              <img src={product.image} className="full-img" />
+            </Grid>
+            <Grid item sm>
+              <Box>
+                <h3>{product.name}</h3>
+                <h4>{product.displayPrice}</h4>
+                <h5>{product.stockMessage}</h5>
+                <p>{product.description}</p>
+              </Box>
+            </Grid>
+          </GridList>
+        </Container>
       </div>
     )
   }
