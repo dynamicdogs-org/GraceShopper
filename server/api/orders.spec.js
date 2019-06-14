@@ -76,13 +76,13 @@ describe('Order routes', () => {
       expect(res.body[1].products.length).to.be.equal(2)
     })
 
-    // it('GET /api/users/:userId', async () => {
-    //   const res = await request(app)
-    //     .get('/api/users/1')
-    //     .expect(200)
+    it('GET /api/orders/:orderId', async () => {
+      const res = await request(app)
+        .get('/api/orders/2')
+        .expect(200)
 
-    //   expect(res.body.email).to.be.equal(codysEmail)
-    // })
+      expect(res.body.paymentType).to.be.equal('gift card')
+    })
 
     // it('POST /api/users', async () => {
     //   const res = await request(app)

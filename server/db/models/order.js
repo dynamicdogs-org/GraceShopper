@@ -32,31 +32,36 @@ const Order = db.define('order', {
     }
   },
   rawDate: {
-    type: sequelize.DATE
+    type: sequelize.DATE,
+    allowNull: false
   },
   date: {
     type: sequelize.VIRTUAL,
     get() {
-      return (
-        this.rawDate.getMonth() +
-        1 +
-        '/' +
-        this.rawDate.getDate() +
-        '/' +
-        this.rawDate.getFullYear()
-      )
+      if (this.rawDate) {
+        return (
+          this.rawDate.getMonth() +
+          1 +
+          '/' +
+          this.rawDate.getDate() +
+          '/' +
+          this.rawDate.getFullYear()
+        )
+      }
     }
   },
   time: {
     type: sequelize.VIRTUAL,
     get() {
-      return (
-        this.rawDate.getHours() +
-        ':' +
-        this.rawDate.getMinutes() +
-        ':' +
-        this.rawDate.getSeconds()
-      )
+      if (this.rawDate) {
+        return (
+          this.rawDate.getHours() +
+          ':' +
+          this.rawDate.getMinutes() +
+          ':' +
+          this.rawDate.getSeconds()
+        )
+      }
     }
   }
 })
