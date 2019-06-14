@@ -29,7 +29,7 @@ const Product = db.define('product', {
   displayPrice: {
     type: Sequelize.VIRTUAL,
     get() {
-      return `$${this.price / 100}`
+      return `$${(this.price / 100).toFixed(2)}`
     }
   },
   image: {
