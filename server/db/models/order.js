@@ -7,39 +7,38 @@ const Order = db.define('order', {
     allowNull: false,
     validate: {
       notEmpty: true
-    },
-    paymentType: {
-      type: sequelize.ENUM('credit card', 'gift card', 'paypal'),
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    orderStatus: {
-      type: sequelize.ENUM('submitted', 'processed', 'shipped', 'delivered'),
-      defaultValue: 'submitted',
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    products: {
-      type: sequelize.ARRAY(sequelize.JSON),
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    rawDate: {
-      type: sequelize.DATE,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    date: {
-      type: sequelize.VIRTUAL,
-      get() {
+    }
+  },
+  paymentType: {
+    type: sequelize.ENUM('credit card', 'gift card', 'paypal'),
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  orderStatus: {
+    type: sequelize.ENUM('submitted', 'processed', 'shipped', 'delivered'),
+    defaultValue: 'submitted',
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  products: {
+    type: sequelize.ARRAY(sequelize.JSON),
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  rawDate: {
+    type: sequelize.DATE,
+    allowNull: false
+  },
+  date: {
+    type: sequelize.VIRTUAL,
+    get() {
+      if (this.rawDate) {
         return (
           this.rawDate.getMonth() +
           1 +
@@ -49,10 +48,12 @@ const Order = db.define('order', {
           this.rawDate.getFullYear()
         )
       }
-    },
-    time: {
-      type: sequelize.VIRTUAL,
-      get() {
+    }
+  },
+  time: {
+    type: sequelize.VIRTUAL,
+    get() {
+      if (this.rawDate) {
         return (
           this.rawDate.getHours() +
           ':' +
@@ -65,8 +66,8 @@ const Order = db.define('order', {
   }
 })
 
-Order.beforeCreate(orderInstance => {
-  orderInstance.rawDate = new Date()
+Order.beforeValidate(orderInstance => {
+  orderInstance.rawDate = orderInstance.createdAt
 })
 
 module.exports = Order

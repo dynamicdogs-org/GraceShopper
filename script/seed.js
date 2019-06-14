@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {User, Product, Cart} = require('../server/db/models')
+const {User, Product, Cart, Order} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
@@ -125,9 +125,54 @@ async function seed() {
     stock: 19
   })
 
+  const order1 = await Order.create({
+    address: '5 Hanover Square, New York',
+    paymentType: 'credit card',
+    products: [
+      {
+        name: 'Blue Buffalo',
+        description: 'Dog Food: Chicken',
+        price: 1,
+        image:
+          'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
+        tags: 'food',
+        stock: 10
+      }
+    ]
+  })
+
+  const order2 = await Order.create({
+    address: '820 Macon St',
+    paymentType: 'gift card',
+    products: [
+      {
+        name: 'Blue Buffalo',
+        description: 'Dog Food: Chicken',
+        price: 1,
+        image:
+          'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
+        tags: 'food',
+        stock: 10
+      },
+      {
+        name: 'Huskys Favorite Food2',
+        description: 'Dog Food: Vegetable2',
+        price: 3022,
+        image:
+          'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+        tags: 'food',
+        stock: 6
+      }
+    ]
+  })
+
   await user1.addProduct(prod1)
   await user2.addProduct(prod2)
   await user1.addProduct(prod3)
+
+  await user1.addOrder(order1)
+  await user1.addOrder(order2)
+
   console.log(`Created Cart Joint Table Successfully`)
 
   console.log(`Seeded Successfully`)
