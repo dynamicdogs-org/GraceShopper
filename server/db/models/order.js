@@ -31,6 +31,16 @@ const Order = db.define('order', {
       notEmpty: true
     }
   },
+  orderTotal: {
+    type: sequelize.INTEGER,
+    allowNull: false
+  },
+  displayOrderTotal: {
+    type: sequelize.VIRTUAL,
+    get() {
+      return this.orderTotal / 100
+    }
+  },
   rawDate: {
     type: sequelize.DATE,
     allowNull: false
