@@ -12,7 +12,8 @@ import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    background: '#33eaff'
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -21,58 +22,50 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     flex: 1
   },
-  navBarColor: {
-    background: '#33eaff'
-  }
+  navBarColor: {}
 }))
 
 const Navbar = ({handleClick, isLoggedIn, userId}) => {
   const classes = useStyles()
   return (
-    <div className={classes.root}>
-      <AppBar position="static" className={classes.navBarColor}>
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Dynamic Dogs
-            <Link color="inherit" component={RouterLink} to="/products">
-              <Button color="inherit">View Products</Button>
+    <AppBar position="sticky" className={classes.root}>
+      <Toolbar>
+        <Typography variant="h6" className={classes.title}>
+          Dynamic Dogs
+          <Link color="inherit" component={RouterLink} to="/products">
+            <Button color="inherit">View Products</Button>
+          </Link>
+        </Typography>
+
+        {/* Link from Material UI links together to achieve same feature as (Link as RouterLink) from React Router */}
+        {isLoggedIn ? (
+          <div>
+            {/* The navbar will show these links after you log in */}
+            <Link color="inherit" component={RouterLink} to={`/cart/${userId}`}>
+              <Button color="inherit">Cart</Button>
             </Link>
-          </Typography>
 
-          {/* Link from Material UI links together to achieve same feature as (Link as RouterLink) from React Router */}
-          {isLoggedIn ? (
-            <div>
-              {/* The navbar will show these links after you log in */}
-              <Link
-                color="inherit"
-                component={RouterLink}
-                to={`/cart/${userId}`}
-              >
-                <Button color="inherit">Cart</Button>
-              </Link>
+            <Link color="inherit" component={RouterLink} to="/home">
+              <Button color="inherit">My Account</Button>
+            </Link>
 
-              <Link color="inherit" component={RouterLink} to="/home">
-                <Button color="inherit">My Account</Button>
-              </Link>
+            <Button color="inherit" onClick={handleClick}>
+              Logout
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <Link color="inherit" component={RouterLink} to="/login">
+              <Button color="inherit">Login</Button>
+            </Link>
 
-              <Button color="inherit" onClick={handleClick}>
-                Logout
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <Link color="inherit" component={RouterLink} to="/login">
-                <Button color="inherit">Login</Button>
-              </Link>
-
-              <Link color="inherit" component={RouterLink} to="/signup">
-                <Button color="inherit">Sign Up</Button>
-              </Link>
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
+            <Link color="inherit" component={RouterLink} to="/signup">
+              <Button color="inherit">Sign Up</Button>
+            </Link>
+          </div>
+        )}
+      </Toolbar>
+    </AppBar>
   )
 }
 
