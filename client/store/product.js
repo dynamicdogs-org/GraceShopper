@@ -46,7 +46,7 @@ export const getSingleProductThunk = function(productId) {
 }
 
 //PRODUCT REDUCER:
-export const product = (state = initialState, action) => {
+const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_PRODUCTS:
       return action.payload
@@ -56,3 +56,5 @@ export const product = (state = initialState, action) => {
       return state
   }
 }
+
+export default productReducer
