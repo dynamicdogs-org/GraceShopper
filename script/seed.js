@@ -131,14 +131,11 @@ async function seed() {
     products: [
       {
         name: 'Blue Buffalo',
-        description: 'Dog Food: Chicken',
-        price: 1,
-        image:
-          'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
-        tags: 'food',
-        stock: 10
+        price: 1000,
+        quantity: 4
       }
-    ]
+    ],
+    orderTotal: 4000
   })
 
   const order2 = await Order.create({
@@ -147,23 +144,16 @@ async function seed() {
     products: [
       {
         name: 'Blue Buffalo',
-        description: 'Dog Food: Chicken',
-        price: 1,
-        image:
-          'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
-        tags: 'food',
-        stock: 10
+        price: 1000,
+        quantity: 2
       },
       {
         name: 'Huskys Favorite Food2',
-        description: 'Dog Food: Vegetable2',
         price: 3022,
-        image:
-          'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-        tags: 'food',
-        stock: 6
+        quantity: 1
       }
-    ]
+    ],
+    orderTotal: 5022
   })
 
   await user1.addProduct(prod1)

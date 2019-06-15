@@ -25,8 +25,7 @@ describe('Order routes', () => {
 
       const prod1 = await Product.create({
         name: 'Blue Buffalo',
-        description: 'Dog Food: Chicken',
-        price: 1,
+        price: 1000,
         image:
           'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
         tags: 'food',
@@ -46,13 +45,15 @@ describe('Order routes', () => {
       const order1 = await Order.create({
         address: '5 Hanover Square, New York',
         paymentType: 'credit card',
-        products: [prod1]
+        products: [prod1],
+        orderTotal: 2000
       })
 
       const order2 = await Order.create({
         address: '820 Macon St',
         paymentType: 'gift card',
-        products: [prod1, prod2]
+        products: [prod1, prod2],
+        orderTotal: 5022
       })
 
       await user1.addProduct(prod1)

@@ -17,7 +17,13 @@ const Order = db.define('order', {
     }
   },
   orderStatus: {
-    type: sequelize.ENUM('submitted', 'processed', 'shipped', 'delivered'),
+    type: sequelize.ENUM(
+      'submitted',
+      'processed',
+      'shipped',
+      'delivered',
+      'canceled'
+    ),
     defaultValue: 'submitted',
     allowNull: false,
     validate: {
@@ -29,6 +35,16 @@ const Order = db.define('order', {
     allowNull: false,
     validate: {
       notEmpty: true
+    }
+  },
+  orderTotal: {
+    type: sequelize.INTEGER,
+    allowNull: false
+  },
+  displayOrderTotal: {
+    type: sequelize.VIRTUAL,
+    get() {
+      return this.orderTotal / 100
     }
   },
   rawDate: {
