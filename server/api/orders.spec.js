@@ -101,23 +101,26 @@ describe('Order routes', () => {
       expect(res.body.paymentType).to.be.equal('gift card')
     })
 
-    // it('PUT /api/users/:userId', async () => {
-    //   const res = await request(app)
-    //     .put('/api/users/1')
-    //     .send({email: 'codyZ2kool@puppybook.com'})
-    //     .expect(200)
+    it('PUT /api/orders/:orderId', async () => {
+      const res = await request(app)
+        .put('/api/orders/2')
+        .send({orderStatus: 'processed'})
+        .expect(200)
 
-    //   expect(res.body.email).to.be.equal('codyZ2kool@puppybook.com')
-    // })
+      const orderRes = await request(app).get('/api/orders/2')
 
-    // it('DELETE /api/users/:userId', async () => {
-    //   const res = await request(app)
-    //     .delete('/api/users/1')
-    //     .expect(204)
+      expect(res.body.orderStatus).to.be.equal('processed')
+      expect(orderRes.body.orderStatus).to.be.equal('processed')
+    })
 
-    //   const users = await request(app).get('/api/users')
+    it('DELETE /api/users/:userId', async () => {
+      const res = await request(app)
+        .delete('/api/users/1')
+        .expect(204)
 
-    //   expect(users.body.length).to.be.equal(0)
-    // })
+      const users = await request(app).get('/api/users')
+
+      expect(users.body.length).to.be.equal(0)
+    })
   }) // end describe('/api/users')
 }) // end describe('User routes')
