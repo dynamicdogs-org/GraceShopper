@@ -7,6 +7,7 @@ import {me} from './store'
 import SingleProductDetail from './components/SingleProductDetail'
 import AllProduct from './components/AllProducts'
 import Cart from './components/Cart.js'
+import CheckoutForm from './components/CheckoutForm'
 
 /*
  * COMPONENT
@@ -31,6 +32,7 @@ class Routes extends Component {
             <Route exact path="/home" component={UserHome} />
             <Route exact path={`/cart/${userId}`} component={Cart} />
             <Route exact path="/products" component={AllProduct} />
+            <Route exact path="/cart/checkout" component={CheckoutForm} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

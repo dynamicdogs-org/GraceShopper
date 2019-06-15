@@ -26,7 +26,6 @@ class disconnectedCart extends React.Component {
                   color="primary"
                   //issue a thunk that'll delete stuff from db
                   onClick={() => {
-                    console.log(`prod.id: ${prod.id}, userId: ${userId}`)
                     this.props.deleteItemFromCart(userId, prod.id)
                   }}
                 >
