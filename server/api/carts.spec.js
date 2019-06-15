@@ -117,7 +117,7 @@ describe('Cart routes', () => {
       expect(res.body.quantity).to.be.equal(10)
     })
 
-    xit('DELETE /api/carts/:userId/:productId', async () => {
+    it('DELETE /api/carts/:userId/:productId', async () => {
       const res = await request(app)
         .delete('/api/carts/2/3')
         .expect(204)
@@ -126,6 +126,8 @@ describe('Cart routes', () => {
 
       expect(users.body.length).to.be.equal(0)
     })
+
+    // it()
   }) // end describe('/api/carts')
 }) // end describe('Carts routes')
 //

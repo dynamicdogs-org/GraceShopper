@@ -71,3 +71,16 @@ router.put('/:userId/:productId', async (req, res, next) => {
     next(error)
   }
 })
+
+router.delete('/:userId', async (req, res, next) => {
+  try {
+    await Cart.destroy({
+      where: {
+        userId: req.params.userId
+      }
+    })
+    res.status(204).send('Cart emptied.')
+  } catch (error) {
+    next(error)
+  }
+})
