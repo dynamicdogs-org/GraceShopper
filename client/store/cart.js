@@ -23,9 +23,10 @@ const addItemToCart = newProd => {
   }
 }
 
-const deleteItemFromCart = () => {
+const deleteItemFromCart = itemId => {
   return {
-    type: DELETE_ITEM
+    type: DELETE_ITEM,
+    payload: itemId
   }
 }
 
@@ -55,13 +56,9 @@ export const addItemToCartThunk = (userId, productId) => {
 
 export const deleteItemFromCartThunk = (userId, productId) => {
   return async function(dispatch) {
-    console.log(
-      `deleteItemFromCartThunk was called with userId: ${userId} and productId: ${productId}! `
-    )
-
     try {
       await axios.delete(`/${userId}/${productId}`)
-      dispatch(getCartThunk(userId))
+      dispatch(deleteItemFromCart(productId))
     } catch (error) {
       console.log(error)
     }
@@ -77,6 +74,10 @@ const cartReducer = (state = initialState, action) => {
     case ADD_ITEM: {
       return [...state, action.payload]
     }
+    case DELETE_ITEM: {
+      return [...state].filter(elem => elem.id != action.payload)
+    }
+
     default:
       return state
   }
