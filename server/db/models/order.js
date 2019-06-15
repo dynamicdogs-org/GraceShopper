@@ -17,7 +17,13 @@ const Order = db.define('order', {
     }
   },
   orderStatus: {
-    type: sequelize.ENUM('submitted', 'processed', 'shipped', 'delivered'),
+    type: sequelize.ENUM(
+      'submitted',
+      'processed',
+      'shipped',
+      'delivered',
+      'canceled'
+    ),
     defaultValue: 'submitted',
     allowNull: false,
     validate: {
