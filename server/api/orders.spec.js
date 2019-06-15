@@ -5,7 +5,9 @@ const request = require('supertest')
 const db = require('../db')
 const app = require('../index')
 const Order = db.model('order')
+const Product = db.model('product')
 const User = db.model('user')
+const Cart = db.model('cart')
 
 describe('Order routes', () => {
   beforeEach(() => {
@@ -21,46 +23,39 @@ describe('Order routes', () => {
         lastName: 'TheDog'
       })
 
+      const prod1 = await Product.create({
+        name: 'Blue Buffalo',
+        description: 'Dog Food: Chicken',
+        price: 1,
+        image:
+          'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
+        tags: 'food',
+        stock: 10
+      })
+
+      const prod2 = await Product.create({
+        name: 'Huskys Favorite Food2',
+        description: 'Dog Food: Vegetable2',
+        price: 3022,
+        image:
+          'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+        tags: 'food',
+        stock: 6
+      })
+
       const order1 = await Order.create({
         address: '5 Hanover Square, New York',
         paymentType: 'credit card',
-        products: [
-          {
-            name: 'Blue Buffalo',
-            description: 'Dog Food: Chicken',
-            price: 1,
-            image:
-              'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
-            tags: 'food',
-            stock: 10
-          }
-        ]
+        products: [prod1]
       })
 
       const order2 = await Order.create({
         address: '820 Macon St',
         paymentType: 'gift card',
-        products: [
-          {
-            name: 'Blue Buffalo',
-            description: 'Dog Food: Chicken',
-            price: 1,
-            image:
-              'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
-            tags: 'food',
-            stock: 10
-          },
-          {
-            name: 'Huskys Favorite Food2',
-            description: 'Dog Food: Vegetable2',
-            price: 3022,
-            image:
-              'https://images.unsplash.com/photo-1491604612772-6853927639ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-            tags: 'food',
-            stock: 6
-          }
-        ]
+        products: [prod1, prod2]
       })
+
+      await user1.addProduct(prod1)
 
       await user1.addOrder(order1)
       await user1.addOrder(order2)
@@ -84,22 +79,25 @@ describe('Order routes', () => {
       expect(res.body.paymentType).to.be.equal('gift card')
     })
 
-    // it('POST /api/users', async () => {
-    //   const res = await request(app)
-    //     .post('/api/users')
-    //     .send({
-    //       email: 'scooby@doo.com',
-    //       password: 'snax',
-    //       firstName: 'Scooby',
-    //       lastName: 'Doo'
-    //     })
-    //     .expect(201)
+    it('POST /api/orders', async () => {
+      const orders1 = await request(app).get('/api/orders')
+      const res = await request(app)
+        .post('/api/orders')
+        .send({
+          address: '5 Hanover Sq',
+          paymentType: 'gift card',
+          //need a way to send logged in user id for testing
+          id: 1
+        })
+        .expect(201)
 
-    //   const users = await request(app).get('/api/users')
+      const orders2 = await request(app).get('/api/orders')
 
-    //   expect(users.body.length).to.be.equal(2)
-    //   expect(res.body.firstName).to.be.equal('Scooby')
-    // })
+      expect(orders1.body.length).to.be.equal(2)
+
+      expect(orders2.body.length).to.be.equal(3)
+      expect(res.body.paymentType).to.be.equal('gift card')
+    })
 
     // it('PUT /api/users/:userId', async () => {
     //   const res = await request(app)
