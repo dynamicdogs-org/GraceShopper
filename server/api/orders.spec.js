@@ -79,7 +79,8 @@ describe('Order routes', () => {
       expect(res.body.paymentType).to.be.equal('gift card')
     })
 
-    it('POST /api/orders', async () => {
+    //this test is commented out
+    xit('POST /api/orders', async () => {
       const orders1 = await request(app).get('/api/orders')
       const res = await request(app)
         .post('/api/orders')
