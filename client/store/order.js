@@ -27,7 +27,7 @@ export const submitOrderThunk = function(order) {
 const initialState = []
 
 //reducers
-const orderReducer = (orders = initialState, action) => {
+export const orderReducer = (orders = initialState, action) => {
   switch (action.type) {
     case SUBMIT_ORDER:
       return [...orders, action.payload]
@@ -35,3 +35,5 @@ const orderReducer = (orders = initialState, action) => {
       return orders
   }
 }
+
+//
