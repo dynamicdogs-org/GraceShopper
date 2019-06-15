@@ -2,10 +2,23 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getAllProductsThunk} from '../store/product'
 import {addItemToCartThunk} from '../store/cart'
-import {Link} from 'react-router-dom'
-import Button from '@material-ui/core/Button'
+import SingleProduct from './SingleProduct'
+import Grid from '@material-ui/core/Grid'
+import Container from '@material-ui/core/Container'
+import Typography from '@material-ui/core/Typography'
+import {withStyles} from '@material-ui/styles'
 
-class AllProducts extends Component {
+const styles = {
+  root: {
+    flexGrow: 1
+  },
+  title: {
+    flexGrow: 1,
+    flex: 1
+  }
+}
+
+class disconnectedAllProducts extends Component {
   componentDidMount() {
     this.props.getAllProducts()
   }
@@ -14,35 +27,38 @@ class AllProducts extends Component {
     this.props.addItem(userId, productId)
   }
 
-  handleDeleteFrom = (userId, productId) => {}
-
   render() {
     const {product, userId} = this.props
+    const {classes} = this.props
+
     return product.length ? (
-      <div>
-        <h1>This is our All Products page!</h1>
-        <ul>
-          {product.map(prod => {
-            return (
-              <li key={prod.id}>
-                <Link to={`/products/${prod.id}`}>{prod.name}</Link>
-                {userId && (
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    onClick={() => this.handleAddToCart(userId, prod.id)}
-                  >
-                    Add to Cart
-                  </Button>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      </div>
+      <Container>
+        <Typography
+          variant="h6"
+          color="primary"
+          align="center"
+          className={classes.title}
+        >
+          Welcome To Our Products Page!
+        </Typography>
+        <div className={classes.root}>
+          <Grid container spacing={3}>
+            {product.map(prod => {
+              return (
+                <Grid item xs={4} key={prod.id}>
+                  <SingleProduct
+                    product={prod}
+                    userId={userId}
+                    handleAddToCart={this.handleAddToCart}
+                  />
+                </Grid>
+              )
+            })}
+          </Grid>
+        </div>
+      </Container>
     ) : (
-      <div>No products at this time...</div>
+      <Container>No products at this time...</Container>
     )
   }
 }
@@ -64,4 +80,10 @@ const mapDispatchToProps = function(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)
+//Connect AllProducts to the Redux Store
+const AllProducts = connect(mapStateToProps, mapDispatchToProps)(
+  disconnectedAllProducts
+)
+
+//Export Class Component with Material UI Styling
+export default withStyles(styles)(AllProducts)
