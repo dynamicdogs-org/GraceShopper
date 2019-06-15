@@ -84,6 +84,24 @@ describe('Cart routes', () => {
       expect(res.body[0].id).to.be.equal(2)
     })
 
+    it('GET /api/carts/:userId', done => {
+      try {
+        request(app)
+          .post('/auth/login')
+          .send({email: 'husky1@bark.com', password: 'imahusky'})
+          .then(res => {
+            request(app)
+              .get('/api/carts/1')
+              .then(prods => {
+                console.log(prods)
+                done()
+              })
+          })
+      } catch (error) {
+        done(error)
+      }
+    })
+
     xit('POST /api/carts', async () => {
       const res = await request(app)
         .post('/api/carts')
