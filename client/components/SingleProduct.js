@@ -1,50 +1,69 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {getSingleProductThunk} from '../store/product'
-import Box from '@material-ui/core/Box'
-import Container from '@material-ui/core/Container'
-import Grid from '@material-ui/core/Grid'
-import {GridList} from '@material-ui/core'
+import React from 'react'
+import {Link as RouterLink} from 'react-router-dom'
+import Link from '@material-ui/core/Link'
+import {makeStyles} from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
-class SingleProduct extends Component {
-  componentDidMount() {
-    const productId = this.props.match.params.productId
-    this.props.getSingleProduct(productId)
+const useStyles = makeStyles({
+  card: {
+    maxWidth: 345
+  },
+  media: {
+    height: 140
   }
-  
-  render() {
-    const product = this.props.products
-    return (
-      <div>
-        {/* <h1>Single product page</h1> */}
-        <Container>
-          <GridList container direction="row">
-            <Grid item sm>
-              <img src={product.image} className="full-img" />
-            </Grid>
-            <Grid item sm>
-              <Box>
-                <h3>{product.name}</h3>
-                <h4>{product.displayPrice}</h4>
-                <h5>{product.stockMessage}</h5>
-                <p>{product.description}</p>
-              </Box>
-            </Grid>
-          </GridList>
-        </Container>
-      </div>
-    )
-  }
+})
+
+const SingleProduct = props => {
+  const classes = useStyles()
+  const {id, name, image, displayPrice, description} = props.product
+  const {userId} = props
+  const {handleAddToCart} = props
+  return (
+    <Card className={classes.card}>
+      <Link
+        color="inherit"
+        underline="none"
+        component={RouterLink}
+        to={`/products/${id}`}
+      >
+        <CardActionArea>
+          <CardMedia className={classes.media} image={image} title={name} />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {name}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Description: {description}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Price: {displayPrice}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Link>
+      <CardActions>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => handleAddToCart(userId, id)}
+        >
+          Add To Cart
+        </Button>
+
+        <Link color="inherit" component={RouterLink} to={`/products/${id}`}>
+          <Button size="small" color="primary">
+            Learn More
+          </Button>
+        </Link>
+      </CardActions>
+    </Card>
+  )
 }
 
-const mapStateToProps = state => ({
-  products: state.product,
-  users: state.user
-})
-
-const mapDispatchToProps = dispatch => ({
-  getSingleProduct: productId => dispatch(getSingleProductThunk(productId))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct)
+export default SingleProduct
