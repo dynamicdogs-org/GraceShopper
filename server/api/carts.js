@@ -41,6 +41,11 @@ router.post('/:userId/:productId', async (req, res, next) => {
 
 router.delete('/:userId/:productId', async (req, res, next) => {
   try {
+    console.log(
+      `userId and productId in the router.delete api route: ${
+        req.params.userId
+      }, ${req.params.productId}`
+    )
     await Cart.destroy({
       where: {
         userId: req.params.userId,

@@ -2,6 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {getCartThunk} from '../store/cart'
+import Button from '@material-ui/core/Button'
+import {deleteItemFromCartThunk} from '../store/cart'
 
 class disconnectedCart extends React.Component {
   componentDidMount = () => {
@@ -18,6 +20,18 @@ class disconnectedCart extends React.Component {
             return (
               <li key={index}>
                 <Link to={`/products/${prod.id}`}>{prod.name}</Link>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  //issue a thunk that'll delete stuff from db
+                  onClick={() => {
+                    console.log(`prod.id: ${prod.id}, userId: ${userId}`)
+                    this.props.deleteItemFromCart(userId, prod.id)
+                  }}
+                >
+                  Delete
+                </Button>
               </li>
             )
           })}
@@ -38,7 +52,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getCart: userId => dispatch(getCartThunk(userId))
+    getCart: userId => dispatch(getCartThunk(userId)),
+    deleteItemFromCart: (userId, productId) =>
+      dispatch(deleteItemFromCartThunk(userId, productId))
   }
 }
 
