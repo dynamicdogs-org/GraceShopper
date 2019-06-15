@@ -92,10 +92,7 @@ describe('Cart routes', () => {
           .then(res => {
             request(app)
               .get('/api/carts/1')
-              .then(prods => {
-                console.log(prods)
-                done()
-              })
+              .then(done())
           })
       } catch (error) {
         done(error)

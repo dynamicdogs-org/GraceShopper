@@ -49,4 +49,36 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+router.put('/:orderId', async (req, res, next) => {
+  try {
+    const [numAffectedRows, [updatedOrderStatus]] = await Order.update(
+      {
+        orderStatus: req.body.orderStatus
+      },
+      {
+        where: {
+          id: req.params.orderId
+        },
+        returning: true
+      }
+    )
+    res.status(200).json(updatedOrderStatus)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/:orderId', async (req, res, next) => {
+  try {
+    await Order.destroy({
+      where: {
+        id: req.params.orderId
+      }
+    })
+    res.status(200).send('Order deleted.')
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router

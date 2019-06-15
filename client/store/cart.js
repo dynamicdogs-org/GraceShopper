@@ -32,7 +32,6 @@ const deleteItemFromCart = itemId => {
 
 //THUNKS:
 export const getCartThunk = userId => {
-  console.log('getCartThunk was called!')
   return async function(dispatch) {
     try {
       const {data} = await axios.get(`/api/cart/${userId}`)
