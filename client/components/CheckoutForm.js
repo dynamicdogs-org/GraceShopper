@@ -61,6 +61,7 @@ class CheckoutForm extends Component {
     return (
       <div>
         <h1>Checkout</h1>
+        <h3>Shipping address</h3>
         <Address />
         <form onSubmit={this.handleSubmit}>
           {/* <TextField
