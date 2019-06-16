@@ -24,6 +24,7 @@ class CheckoutForm extends Component {
       paymentType: ''
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
@@ -38,17 +39,20 @@ class CheckoutForm extends Component {
 
   isComplete = () => {}
 
-  handleSubmit = () => {
+  handleSubmit(event) {
+    event.preventDefault()
     const cart = this.props.cart
-    const orderTotal =
-      cart.reduce((acc, cur) => {
-        return acc + cur.cart.quantity * cur.price
-      }, 0) / 100
-    const products = cart.map((product, idx) => ({
+    const orderTotal = cart.reduce((acc, cur) => {
+      return acc + cur.cart.quantity * cur.price
+    }, 0)
+    const products = cart.map(product => ({
       product: product.name,
-      unitPrice: product.displayPrice / 100,
+      unitPrice: product.displayPrice,
       quantity: product.cart.quantity
     }))
+    const address = 'somewhere'
+    const paymentType = 'credit card'
+    this.props.submitOrder({orderTotal, address, paymentType, products})
   }
 
   render() {
@@ -124,9 +128,10 @@ class CheckoutForm extends Component {
           </List>
           <Button
             // disabled={isIncomplete}
+            type="submit"
             size="medium"
             color="primary"
-            onClick={() => this.handleSubmit()}
+            // onClick={() => this.handleSubmit()}
           >
             Submit order
           </Button>
