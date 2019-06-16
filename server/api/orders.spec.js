@@ -25,8 +25,7 @@ describe('Order routes', () => {
 
       const prod1 = await Product.create({
         name: 'Blue Buffalo',
-        description: 'Dog Food: Chicken',
-        price: 1,
+        price: 1000,
         image:
           'https://slack-imgs.com/?c=1&url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507146426996-ef05306b995a%3Fixlib%3Drb-1.2.1%26ixid%3DeyJhcHBfaWQiOjEyMDd9%26auto%3Dformat%26fit%3Dcrop%26w%3D1500%26q%3D80',
         tags: 'food',
@@ -46,13 +45,15 @@ describe('Order routes', () => {
       const order1 = await Order.create({
         address: '5 Hanover Square, New York',
         paymentType: 'credit card',
-        products: [prod1]
+        products: [prod1],
+        orderTotal: 2000
       })
 
       const order2 = await Order.create({
         address: '820 Macon St',
         paymentType: 'gift card',
-        products: [prod1, prod2]
+        products: [prod1, prod2],
+        orderTotal: 5022
       })
 
       await user1.addProduct(prod1)
@@ -100,23 +101,26 @@ describe('Order routes', () => {
       expect(res.body.paymentType).to.be.equal('gift card')
     })
 
-    // it('PUT /api/users/:userId', async () => {
-    //   const res = await request(app)
-    //     .put('/api/users/1')
-    //     .send({email: 'codyZ2kool@puppybook.com'})
-    //     .expect(200)
+    it('PUT /api/orders/:orderId', async () => {
+      const res = await request(app)
+        .put('/api/orders/2')
+        .send({orderStatus: 'processed'})
+        .expect(200)
 
-    //   expect(res.body.email).to.be.equal('codyZ2kool@puppybook.com')
-    // })
+      const orderRes = await request(app).get('/api/orders/2')
 
-    // it('DELETE /api/users/:userId', async () => {
-    //   const res = await request(app)
-    //     .delete('/api/users/1')
-    //     .expect(204)
+      expect(res.body.orderStatus).to.be.equal('processed')
+      expect(orderRes.body.orderStatus).to.be.equal('processed')
+    })
 
-    //   const users = await request(app).get('/api/users')
+    it('DELETE /api/users/:userId', async () => {
+      const res = await request(app)
+        .delete('/api/users/1')
+        .expect(204)
 
-    //   expect(users.body.length).to.be.equal(0)
-    // })
+      const users = await request(app).get('/api/users')
+
+      expect(users.body.length).to.be.equal(0)
+    })
   }) // end describe('/api/users')
 }) // end describe('User routes')

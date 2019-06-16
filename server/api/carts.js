@@ -7,7 +7,7 @@ router.use('/:userId', (req, res, next) => {
   if (!req.user) {
     res.redirect('/login')
   } else if (+req.user.id !== +req.params.userId) {
-    res.send('Youre not authorized to perform this action')
+    res.send('You are not authorized to perform this action')
   }
   next()
 })
@@ -17,6 +17,7 @@ router.get('/:userId', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
     const prods = await user.getProducts()
+
     res.json(prods)
   } catch (error) {
     next(error)
@@ -41,11 +42,6 @@ router.post('/:userId/:productId', async (req, res, next) => {
 
 router.delete('/:userId/:productId', async (req, res, next) => {
   try {
-    console.log(
-      `userId and productId in the router.delete api route: ${
-        req.params.userId
-      }, ${req.params.productId}`
-    )
     await Cart.destroy({
       where: {
         userId: req.params.userId,
@@ -53,6 +49,19 @@ router.delete('/:userId/:productId', async (req, res, next) => {
       }
     })
     res.status(204).send('product removed from cart')
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/:userId', async (req, res, next) => {
+  try {
+    await Cart.destroy({
+      where: {
+        userId: req.params.userId
+      }
+    })
+    res.status(204).send('Cart emptied.')
   } catch (error) {
     next(error)
   }

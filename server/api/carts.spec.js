@@ -77,6 +77,7 @@ describe('Cart routes', () => {
 
     xit('GET /api/carts/:userId', async () => {
       const res = await request(app)
+        .send({user: {id: 1}})
         .get('/api/carts/1')
         .expect(200)
 
@@ -84,10 +85,24 @@ describe('Cart routes', () => {
       expect(res.body[0].id).to.be.equal(2)
     })
 
-    xit('POST /api/carts', async () => {
+    xit('GET /api/carts/:userId', done => {
+      try {
+        request(app)
+          .post('/auth/login')
+          .send({email: 'husky1@bark.com', password: 'imahusky'})
+          .then(res => {
+            request(app)
+              .get('/api/carts/1')
+              .then(done())
+          })
+      } catch (error) {
+        done(error)
+      }
+    })
+
+    xit('POST /api/carts/1/3', async () => {
       const res = await request(app)
-        .post('/api/carts')
-        .send({userId: 2, productId: 3})
+        .post('/api/carts/1/3')
         .expect(201)
 
       expect(res.body.productId).to.be.equal(3)
@@ -110,6 +125,16 @@ describe('Cart routes', () => {
       const users = await request(app).get('/api/carts/2')
 
       expect(users.body.length).to.be.equal(0)
+    })
+
+    xit('DELETE /api/carts/:userId', async () => {
+      const res = await request(app)
+        .delete('/api/carts/1')
+        .expect(204)
+
+      const user = await request(app).get('/api/carts/1')
+
+      expect(user.body.length).to.be.equal(0)
     })
   }) // end describe('/api/carts')
 }) // end describe('Carts routes')

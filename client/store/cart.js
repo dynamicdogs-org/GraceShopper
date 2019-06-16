@@ -32,10 +32,9 @@ const deleteItemFromCart = itemId => {
 
 //THUNKS:
 export const getCartThunk = userId => {
-  console.log('getCartThunk was called!')
   return async function(dispatch) {
     try {
-      const {data} = await axios.get(`/api/cart/${userId}`)
+      const {data} = await axios.get(`/api/carts/${userId}`)
       dispatch(getCart(data))
     } catch (error) {
       console.log('There was an error getting the cart: ', error)
@@ -46,7 +45,7 @@ export const getCartThunk = userId => {
 export const addItemToCartThunk = (userId, productId) => {
   return async dispatch => {
     try {
-      const {data} = await axios.post(`/api/cart/${userId}/${productId}`)
+      const {data} = await axios.post(`/api/carts/${userId}/${productId}`)
       dispatch(addItemToCart(data))
     } catch (error) {
       console.log('TCL: addItemToCartThunk -> error', error)
@@ -57,8 +56,7 @@ export const addItemToCartThunk = (userId, productId) => {
 export const deleteItemFromCartThunk = (userId, productId) => {
   return async function(dispatch) {
     try {
-      let result = await axios.delete(`/${userId}/${productId}`)
-      console.log('delete cart result:', result)
+      await axios.delete(`/api/carts/${userId}/${productId}`)
       dispatch(deleteItemFromCart(productId))
     } catch (error) {
       console.log(error)
