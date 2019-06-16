@@ -2,18 +2,14 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {submitOrderThunk} from '../store/order'
 import {getCartThunk} from '../store/cart'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
-import TextField from '@material-ui/core/TextField'
+import Address from './Address'
+import Payment from './Payment'
+
 import Button from '@material-ui/core/Button'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
-import Address from './Address'
 
 class CheckoutForm extends Component {
   constructor() {
@@ -40,29 +36,31 @@ class CheckoutForm extends Component {
     })
   }
 
-  isComplete = () => {
-    const {
-      firstName,
-      lastName,
-      address1,
-      city,
-      state,
-      zip,
-      paymentType
-    } = this.state
-  }
+  isComplete = () => {}
 
-  handleSubmit = () => {}
+  handleSubmit = () => {
+    const cart = this.props.cart
+    const orderTotal =
+      cart.reduce((acc, cur) => {
+        return acc + cur.cart.quantity * cur.price
+      }, 0) / 100
+    const products = cart.map((product, idx) => ({
+      product: product.name,
+      unitPrice: product.displayPrice / 100,
+      quantity: product.cart.quantity
+    }))
+  }
 
   render() {
     const cart = this.props.cart
-    const address = this.state.address
-    const paymentType = this.state.paymentType
+
     return (
       <div>
         <h1>Checkout</h1>
         <h3>Shipping address</h3>
         <Address />
+        <h3>Payment</h3>
+        <Payment />
         <form onSubmit={this.handleSubmit}>
           {/* <TextField
             // id="outlined-multiline-static"
@@ -78,12 +76,11 @@ class CheckoutForm extends Component {
             onChange={this.handleChange}
           /> */}
 
-          <FormControl variant="outlined">
+          {/* <FormControl variant="outlined">
             <InputLabel
               // ref={inputLabel}
               htmlFor="outlined-age-simple"
             >
-              Payment type
             </InputLabel>
             <Select
               required
@@ -99,7 +96,7 @@ class CheckoutForm extends Component {
               <MenuItem value="gift card">Gift card</MenuItem>
               <MenuItem value="paypal">Paypal</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
           <h2>Order summary:</h2>
           <List disablePadding>
             {cart.map((product, idx) => {
@@ -129,7 +126,7 @@ class CheckoutForm extends Component {
             // disabled={isIncomplete}
             size="medium"
             color="primary"
-            onClick={() => this.handleSubmithandleSubmit()}
+            onClick={() => this.handleSubmit()}
           >
             Submit order
           </Button>

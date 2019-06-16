@@ -1,16 +1,11 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 
 const states = [
   'AL',
@@ -81,6 +76,7 @@ class Address extends Component {
       firstName: '',
       lastName: '',
       address1: '',
+      address2: '',
       city: '',
       state: '',
       zip: '',
@@ -103,7 +99,6 @@ class Address extends Component {
   }
 
   toggleSubmitted() {
-    console.log('this.state is ', this.state)
     this.setState(prevState => {
       return {submitted: !prevState.submitted}
     })
@@ -123,7 +118,7 @@ class Address extends Component {
       </div>
     ) : (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form>
           <Grid container spacing={3} onChange={this.handleChange}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -181,7 +176,7 @@ class Address extends Component {
             </Grid>
             <Grid item xs={12} sm={3}>
               <FormControl required fullWidth>
-                <InputLabel htmlFor="age-simple">State</InputLabel>
+                <InputLabel>State</InputLabel>
                 <Select
                   value={this.state.state}
                   name="state"
@@ -225,6 +220,6 @@ class Address extends Component {
   }
 }
 
-export default Address
+//mapDispatch in order to add the address to the cart??
 
-//
+export default Address
