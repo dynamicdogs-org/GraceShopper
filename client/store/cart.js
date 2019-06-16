@@ -57,7 +57,8 @@ export const addItemToCartThunk = (userId, productId) => {
 export const deleteItemFromCartThunk = (userId, productId) => {
   return async function(dispatch) {
     try {
-      await axios.delete(`/${userId}/${productId}`)
+      let result = await axios.delete(`/${userId}/${productId}`)
+      console.log('delete cart result:', result)
       dispatch(deleteItemFromCart(productId))
     } catch (error) {
       console.log(error)
