@@ -18,7 +18,7 @@ import {makeStyles} from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '90.5vh'
+    height: '90vh'
   },
   image: {
     backgroundImage: 'url(https://source.unsplash.com/random)',

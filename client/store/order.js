@@ -12,10 +12,10 @@ const submitOrder = orderData => {
 }
 
 //thunks
-export const submitOrderThunk = function(order) {
+export const submitOrderThunk = function(order, userId) {
   return async function(dispatch) {
     try {
-      const {data} = await axios.post('/api/orders', order)
+      const {data} = await axios.post(`/api/orders/user/${userId}`, order)
       dispatch(submitOrder(data))
     } catch (error) {
       console.error(error)
