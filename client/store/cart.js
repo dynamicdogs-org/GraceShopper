@@ -37,7 +37,7 @@ export const getCartThunk = userId => {
       const {data} = await axios.get(`/api/carts/${userId}`)
       dispatch(getCart(data))
     } catch (error) {
-      console.log('There was an error getting the cart: ', error)
+      console.log('getCartThunk: There was an error getting the cart: ', error)
     }
   }
 }
