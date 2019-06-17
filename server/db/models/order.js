@@ -32,6 +32,7 @@ const Order = db.define('order', {
   },
   products: {
     type: sequelize.ARRAY(sequelize.JSON),
+
     allowNull: false,
     validate: {
       notEmpty: true
