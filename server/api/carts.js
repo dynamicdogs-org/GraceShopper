@@ -27,14 +27,62 @@ router.get('/:userId', async (req, res, next) => {
 //Add Item and User to the Cart Table
 router.post('/:userId/:productId', async (req, res, next) => {
   try {
-    //Might want to change to update quantity instead of creating new
+    //EXAMPLE of findOrCreate
+    //User
+    // .findOrCreate({where: {username: 'sdepold'}, defaults: {job: 'Technical Lead JavaScript'}})
+    // .then(([user, created]) => {
+    //   console.log(user.get({
+    //     plain: true
+    //   }))
+    //   console.log(created)
+
+    //WAS:
     const [prod, wasCreated] = await Cart.findOrCreate({
+      // const result = awaitCart.findOrCreate({
       where: {
         userId: req.params.userId,
         productId: req.params.productId
       }
     })
-    res.status(201).json(prod)
+    console.log('prod: ', prod)
+    console.log('wasCreated: ', wasCreated)
+
+    if (wasCreated === false) {
+      console.log('Product quantity: ', prod.quantity)
+      //update quantity in carts model:
+      //instance.increment(['number', 'count'], { by: 2 }) // increment number and count by 2
+      prod.increment(['quantity'], {by: 1})
+      res.status(201).json(prod.quantity)
+    } else {
+      res.status(201).send(prod)
+    }
+
+    // .then(
+    //   (result) => {
+    //     console.log("prod: ", result[0]);
+    //     console.log("wasCreated: ", result[1]);
+    //   }
+    // )
+    // .then((prod, wasCreated) => {
+    //   console.log("prod: ", prod);
+    //   console.log("wasCreated: ", wasCreated);
+    // })
+    // .then ((prod, wasCreated) => {
+    //   console.log(`prod: ${prod}, wasCreated: ${wasCreated}`)
+    // })
+    // .then (//callback with results of request
+    //   (result) => {
+    //     if (wasCreated >= 1) {
+    //       console.log("Product quantity: ", prod.quantity);
+    //       prod.quantity+=1;
+    //     }
+    //   }
+    // )
+    // .then(
+    //   (prod) => {
+    //     res.status(201).json(prod)
+    //   }
+    // )
   } catch (error) {
     next(error)
   }
