@@ -52,10 +52,12 @@ router.post('/:userId/:productId', async (req, res, next) => {
       //update quantity in carts model:
       //instance.increment(['number', 'count'], { by: 2 }) // increment number and count by 2
       prod.increment(['quantity'], {by: 1})
-      res.status(201).json(prod.quantity)
-    } else {
-      res.status(201).send(prod)
+      console.log('Prod.quantity', prod.quantity)
+
+      // } else {
+      //   res.status(201).send(prod)
     }
+    res.status(201).json({product: prod, quantity: prod.quantity})
 
     // .then(
     //   (result) => {
