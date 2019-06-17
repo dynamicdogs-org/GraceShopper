@@ -85,12 +85,23 @@ class Address extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.isComplete = this.isComplete.bind(this)
     this.toggleSubmitted = this.toggleSubmitted.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     })
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    const address = `${this.state.firstName} ${this.state.lastName}
+    ${this.state.address1} ${
+      this.state.address2 ? '\n' + this.state.address2 : ''
+    }
+    ${this.state.city}, ${this.state.state} ${this.state.zip}`
+    this.props.setAddress(address)
   }
 
   isComplete() {
@@ -206,13 +217,15 @@ class Address extends Component {
 
           <Button
             disabled={!this.isComplete()}
+            type="submit"
             size="medium"
             color="primary"
             onClick={() => {
               this.toggleSubmitted()
+              this.handleSubmit(event)
             }}
           >
-            Payment information
+            Next
           </Button>
         </form>
       </div>

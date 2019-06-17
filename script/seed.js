@@ -127,7 +127,7 @@ async function seed() {
 
   const order1 = await Order.create({
     address: '5 Hanover Square, New York',
-    paymentType: 'credit card',
+    paymentDetails: {some: 'details'},
     products: [
       {
         name: 'Blue Buffalo',
@@ -141,6 +141,7 @@ async function seed() {
   const order2 = await Order.create({
     address: '820 Macon St',
     paymentType: 'gift card',
+    paymentDetails: {some: 'details'},
     products: [
       {
         name: 'Blue Buffalo',

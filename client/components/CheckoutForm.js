@@ -15,16 +15,14 @@ class CheckoutForm extends Component {
   constructor() {
     super()
     this.state = {
-      firstName: '',
-      lastName: '',
-      address1: '',
-      city: '',
-      state: '',
-      zip: '',
-      paymentType: ''
+      address: '',
+      payment: null
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.setAddress = this.setAddress.bind(this)
+    this.setPayment = this.setPayment.bind(this)
+    this.isComplete = this.isComplete.bind(this)
   }
 
   componentDidMount() {
@@ -37,7 +35,17 @@ class CheckoutForm extends Component {
     })
   }
 
-  isComplete = () => {}
+  setAddress(address) {
+    this.setState({address})
+  }
+
+  setPayment(payment) {
+    this.setState({payment})
+  }
+
+  isComplete() {
+    return this.state.address && this.state.payment
+  }
 
   handleSubmit(event) {
     event.preventDefault()
@@ -50,57 +58,21 @@ class CheckoutForm extends Component {
       unitPrice: product.displayPrice,
       quantity: product.cart.quantity
     }))
-    const address = 'somewhere'
-    const paymentType = 'credit card'
-    this.props.submitOrder({orderTotal, address, paymentType, products})
+    const address = this.state.address
+    const paymentDetails = this.state.payment
+    this.props.submitOrder({orderTotal, address, paymentDetails, products})
   }
 
   render() {
     const cart = this.props.cart
-
     return (
       <div>
         <h1>Checkout</h1>
         <h3>Shipping address</h3>
-        <Address />
+        <Address setAddress={this.setAddress} />
         <h3>Payment</h3>
-        <Payment />
+        <Payment setPayment={this.setPayment} />
         <form onSubmit={this.handleSubmit}>
-          {/* <TextField
-            // id="outlined-multiline-static"
-            required
-            label="Shipping address"
-            name="address"
-            multiline
-            rows="4"
-            value={this.state.address}
-            // className={classes.textField}
-            margin="normal"
-            variant="outlined"
-            onChange={this.handleChange}
-          /> */}
-
-          {/* <FormControl variant="outlined">
-            <InputLabel
-              // ref={inputLabel}
-              htmlFor="outlined-age-simple"
-            >
-            </InputLabel>
-            <Select
-              required
-              name="paymentType"
-              value={this.state.paymentType}
-              onChange={this.handleChange}
-              fullWidth
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="credit card">Credit card</MenuItem>
-              <MenuItem value="gift card">Gift card</MenuItem>
-              <MenuItem value="paypal">Paypal</MenuItem>
-            </Select>
-          </FormControl> */}
           <h2>Order summary:</h2>
           <List disablePadding>
             {cart.map((product, idx) => {
@@ -127,11 +99,10 @@ class CheckoutForm extends Component {
             </ListItem>
           </List>
           <Button
-            // disabled={isIncomplete}
+            disabled={!this.isComplete}
             type="submit"
             size="medium"
             color="primary"
-            // onClick={() => this.handleSubmit()}
           >
             Submit order
           </Button>
