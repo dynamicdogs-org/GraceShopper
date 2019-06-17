@@ -16,7 +16,7 @@ class CheckoutForm extends Component {
     super()
     this.state = {
       address: '',
-      payment: ''
+      payment: null
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -59,8 +59,8 @@ class CheckoutForm extends Component {
       quantity: product.cart.quantity
     }))
     const address = this.state.address
-    const paymentType = 'credit card'
-    this.props.submitOrder({orderTotal, address, paymentType, products})
+    const paymentDetails = this.state.payment
+    this.props.submitOrder({orderTotal, address, paymentDetails, products})
   }
 
   render() {
@@ -71,7 +71,7 @@ class CheckoutForm extends Component {
         <h3>Shipping address</h3>
         <Address setAddress={this.setAddress} />
         <h3>Payment</h3>
-        <Payment />
+        <Payment setPayment={this.setPayment} />
         <form onSubmit={this.handleSubmit}>
           <h2>Order summary:</h2>
           <List disablePadding>
@@ -103,7 +103,6 @@ class CheckoutForm extends Component {
             type="submit"
             size="medium"
             color="primary"
-            // onClick={() => this.handleSubmit()}
           >
             Submit order
           </Button>
