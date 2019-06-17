@@ -27,16 +27,6 @@ router.get('/:userId', async (req, res, next) => {
 //Add Item and User to the Cart Table
 router.post('/:userId/:productId', async (req, res, next) => {
   try {
-    //EXAMPLE of findOrCreate
-    //User
-    // .findOrCreate({where: {username: 'sdepold'}, defaults: {job: 'Technical Lead JavaScript'}})
-    // .then(([user, created]) => {
-    //   console.log(user.get({
-    //     plain: true
-    //   }))
-    //   console.log(created)
-
-    //WAS:
     const [prod, wasCreated] = await Cart.findOrCreate({
       // const result = awaitCart.findOrCreate({
       where: {
@@ -54,10 +44,14 @@ router.post('/:userId/:productId', async (req, res, next) => {
       prod.increment(['quantity'], {by: 1})
       console.log('Prod.quantity', prod.quantity)
 
+      res.status(201).json({product: prod, quantity: prod.quantity})
+
       // } else {
       //   res.status(201).send(prod)
+    } else {
+      // res.status(201).json({product: prod, quantity: prod.quantity})
+      res.status(201).json({product: prod, quantity: null})
     }
-    res.status(201).json({product: prod, quantity: prod.quantity})
 
     // .then(
     //   (result) => {

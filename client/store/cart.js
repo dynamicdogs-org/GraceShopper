@@ -30,6 +30,13 @@ const deleteItemFromCart = itemId => {
   }
 }
 
+const changeQuantity = quantity => {
+  return {
+    type: CHANGE_QUANTITY,
+    payload: quantity
+  }
+}
+
 //THUNKS:
 export const getCartThunk = userId => {
   return async function(dispatch) {
@@ -45,8 +52,26 @@ export const getCartThunk = userId => {
 export const addItemToCartThunk = (userId, productId) => {
   return async dispatch => {
     try {
+      //WAS:
       const {data} = await axios.post(`/api/carts/${userId}/${productId}`)
-      dispatch(addItemToCart(data))
+      //const {data.product, data.quantity} = await axios.post(`/api/carts/${userId}/${productId}`);
+      //const result = await axios.post(`/api/carts/${userId}/${productId}`)
+      //console.log("Result: ", result);
+
+      const product = data.product
+      const quantity = data.quantity
+
+      console.log('product: ', product)
+      console.log('quantity: ', quantity)
+
+      if (quantity) {
+        // dispatch(changeQuantity(quantity))
+        console.log("Quantity isn't null!")
+      } else {
+        console.log('Product being dispatched from add to cart: ', product)
+        dispatch(addItemToCart(product))
+        console.log('ELSE')
+      }
     } catch (error) {
       console.log('TCL: addItemToCartThunk -> error', error)
     }
@@ -70,9 +95,10 @@ const cartReducer = (state = initialState, action) => {
     case GET_CART: {
       return action.payload
     }
-    case ADD_ITEM: {
-      return [...state, action.payload]
-    }
+    //OLD:
+    // case ADD_ITEM: {
+    //   return [...state, action.payload]
+    // }
     case DELETE_ITEM: {
       return [...state].filter(elem => elem.id != action.payload)
     }

@@ -18,6 +18,7 @@ router.get('/', async (req, res, next) => {
 })
 
 //Only available to admin
+//Need to implement a lock for backend through middleware
 router.get('/:userId', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
@@ -32,6 +33,7 @@ router.get('/:userId', async (req, res, next) => {
 })
 
 //Only available to admin
+//restrict to admin only
 router.post('/', async (req, res, next) => {
   try {
     const user = await User.create(req.body)
@@ -42,6 +44,7 @@ router.post('/', async (req, res, next) => {
 })
 
 //Only available to admin
+//check req.body (certain fields only)
 router.put('/:userId', async (req, res, next) => {
   try {
     const [numAffectedRows, [updatedUser]] = await User.update(req.body, {
