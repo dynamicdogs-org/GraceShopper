@@ -11,22 +11,29 @@ class Payment extends Component {
       cardNumber: '',
       expDate: '',
       cvv: '',
+      formErrors: {nameOnCard: '', cardNumber: '', expDate: '', cvv: ''},
       nameOnCardValid: false,
       cardNumberValid: false,
       expDateValid: false,
       cvvValid: false,
+      formValid: false,
       submitted: false
     }
+    this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.isComplete = this.isComplete.bind(this)
     this.toggleSubmitted = this.toggleSubmitted.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.validateField = this.validateField.bind(this)
+    this.validateForm = this.validateForm.bind(this)
   }
 
   handleChange(event) {
+    const name = event.target.name
+    const value = event.target.value
     this.setState({
-      [event.target.name]: event.target.value
+      [name]: value
     })
+    this.validateField(name, value)
   }
 
   handleSubmit(event) {
@@ -50,29 +57,72 @@ class Payment extends Component {
     })
   }
 
-  validateField(fieldname, value) {
-    let {nameOnCardValid, cardNumberValid, expDateValid, cvvValid} = this.state
+  validateField(fieldName, value) {
+    let {
+      formErrors,
+      nameOnCardValid,
+      cardNumberValid,
+      expDateValid,
+      cvvValid
+    } = this.state
     switch (fieldName) {
       case 'nameOnCard':
         nameOnCardValid = value.match(/^[a-zA-z\s]+$/)
+        formErrors.nameOnCard = nameOnCardValid
+          ? ''
+          : 'must contain only letters a-z and spaces'
         break
       case 'cardNumber':
         cardNumberValid = value.match(
-          /^(?:4[0-9]{12}(?:[0-9]{3})? | (?:5[1-5][0-9]{2} | 222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12} | 3[47][0-9]{13} | 3(?:0[0-5]|[68][0-9])[0-9]{11} | 6(?:011|5[0-9]{2})[0-9]{12} | (?:2131|1800|35\d{3})\d{11})$/
+          /^(?:4[0-9]{12}(?:[0-9]{3})? | (?:5[1-5][0-9]{2} | 222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12} | 3[47][0-9]{13})$/
         )
+        formErrors.cardNumber = cardNumberValid
+          ? ''
+          : 'This is not a valid Visa, MasterCard, or American Express card number.'
         break
-      case 'expDateValid':
-        expDateValid = value > new Date()
+      case 'expDate':
+        const today = new Date().toISOString().slice(0, 10)
+        expDateValid = value >= today
+        formErrors.expDate = expDateValid ? '' : 'Date cannot be in the past.'
         break
       case 'cvv':
         cvvValid = value.match(/^[0-9]{3}/)
+        formErrors.cvvValid = cvvValid ? '' : 'Must be 3 digits.'
         break
       default:
         break
     }
+    this.setState(
+      {
+        formErrors,
+        nameOnCardValid,
+        cardNumberValid,
+        expDateValid,
+        cvvValid
+      },
+      this.validateForm
+    )
+  }
+
+  validateForm() {
+    this.setState(prevState => {
+      return {
+        formValid:
+          prevState.nameOnCardValid &&
+          prevState.cardNumberValid &&
+          prevState.expDateValid &&
+          prevState.cvvValid
+      }
+    })
+    console.log(this.state.formErrors)
   }
 
   render() {
+    const errors = this.state.formErrors
+    const nameOnCardError = errors.nameOnCard
+    const cardNumberError = errors.cardNumber
+    const expDateError = errors.expDate
+    const cvvError = errors.cvv
     return this.state.submitted ? (
       <div onClick={this.toggleSubmitted}>
         <p>Name: {this.state.nameOnCard}</p>
@@ -89,49 +139,58 @@ class Payment extends Component {
             <Grid item xs={12} md={6}>
               <TextField
                 required
+                error={!!nameOnCardError}
                 id="nameOnCard"
                 name="nameOnCard"
                 value={this.state.nameOnCard}
                 label="Name on card"
+                helperText={nameOnCardError ? nameOnCardError : null}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
                 required
+                error={!!cardNumberError}
                 id="cardNumber"
                 name="cardNumber"
                 label="Card number"
+                helperText={cardNumberError ? cardNumberError : null}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
                 required
+                error={!!expDateError}
                 id="expDate"
                 name="expDate"
                 value={this.state.expDate}
                 label="Expiration date"
                 type="date"
                 InputLabelProps={{shrink: true}}
+                helperText={expDateError ? expDateError : null}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
                 required
+                error={!!cvvError}
                 id="cvv"
                 name="cvv"
                 label="CVV"
                 type="password"
-                helperText="Last three digits on signature strip"
+                helperText={
+                  cvvError ? cvvError : 'Last three digits on signature strip'
+                }
                 fullWidth
               />
             </Grid>
           </Grid>
 
           <Button
-            disabled={!this.isComplete()}
+            disabled={!this.state.formValid}
             size="medium"
             color="primary"
             onClick={() => {
