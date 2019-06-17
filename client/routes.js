@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome} from './components'
+import {Login, Signup, UserHome, AdminPage, NotAuthorized} from './components'
 import {me} from './store'
 import SingleProductDetail from './components/SingleProductDetail'
 import AllProduct from './components/AllProducts'
@@ -18,7 +18,7 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn, userId} = this.props
+    const {isLoggedIn, user} = this.props
 
     return (
       <Switch>
@@ -30,9 +30,17 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route exact path="/home" component={UserHome} />
-            <Route exact path={`/cart/${userId}`} component={Cart} />
+            <Route exact path={`/cart/${user.id}`} component={Cart} />
             <Route exact path="/products" component={AllProduct} />
             <Route exact path="/cart/checkout" component={CheckoutForm} />
+            {//Check if user is an admin, if admin, displays the admin page when requested
+            //if not, then display the not authorized message
+            user.isAdmin ? (
+              <Route path="/adminpage" component={AdminPage} />
+            ) : (
+              <Route path="/adminpage" component={NotAuthorized} />
+            )}
+            <Route path="/notauthorized" component={NotAuthorized} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
@@ -50,7 +58,7 @@ const mapState = state => {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id,
-    userId: state.user.id
+    user: state.user
   }
 }
 

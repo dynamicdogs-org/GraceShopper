@@ -2,6 +2,18 @@ const router = require('express').Router()
 const {User} = require('../db/models')
 module.exports = router
 
+//User Security Middleware to check if user is logged and isAdmin.
+router.use('/', (req, res, next) => {
+  //If user not logged in, redirect to login page
+  if (!req.user) {
+    res.redirect('/login')
+  } else if (!req.user.isAdmin) {
+    //If logged in, but not admin, don't allow access
+    res.redirect('/notauthorized')
+  }
+  next()
+})
+
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -34,7 +46,12 @@ router.get('/:userId', async (req, res, next) => {
 //Only available to admin
 router.post('/', async (req, res, next) => {
   try {
-    const user = await User.create(req.body)
+    const user = await User.create({
+      email: req.body.email,
+      password: req.body.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName
+    })
     res.status(201).json(user)
   } catch (error) {
     next(error)
