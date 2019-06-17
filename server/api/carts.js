@@ -7,7 +7,11 @@ router.use('/:userId', (req, res, next) => {
   if (!req.user) {
     res.redirect('/login')
   } else if (+req.user.id !== +req.params.userId) {
-    res.send('You are not authorized to perform this action')
+    const notAuthrozied = new Error(
+      'You are not authrozied to perform this action. Only an admin is allowed.'
+    )
+    notAuthrozied.status = 401
+    next(notAuthrozied)
   }
   next()
 })

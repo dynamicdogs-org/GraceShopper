@@ -2,6 +2,22 @@ const router = require('express').Router()
 const {User} = require('../db/models')
 module.exports = router
 
+//User Security Middleware to check if user is logged and isAdmin.
+router.use('/', (req, res, next) => {
+  //If user not logged in, redirect to login page
+  if (!req.user) {
+    res.redirect('/login')
+  } else if (!req.user.isAdmin) {
+    //If logged in, but not admin, don't allow access
+    const notAuthrozied = new Error(
+      'You are not authrozied to perform this action. Only an admin is allowed.'
+    )
+    notAuthrozied.status = 401
+    next(notAuthrozied)
+  }
+  next()
+})
+
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
