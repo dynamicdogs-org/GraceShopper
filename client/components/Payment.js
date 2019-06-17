@@ -73,12 +73,10 @@ class Payment extends Component {
           : 'must contain only letters a-z and spaces'
         break
       case 'cardNumber':
-        cardNumberValid = value.match(
-          /^(?:4[0-9]{12}(?:[0-9]{3})? | (?:5[1-5][0-9]{2} | 222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12} | 3[47][0-9]{13})$/
-        )
+        cardNumberValid = value.match(/^[0-9]{15,19}$$/)
         formErrors.cardNumber = cardNumberValid
           ? ''
-          : 'This is not a valid Visa, MasterCard, or American Express card number.'
+          : 'Card number must be between 15 and 19 digits.'
         break
       case 'expDate':
         const today = new Date().toISOString().slice(0, 10)
@@ -87,7 +85,7 @@ class Payment extends Component {
         break
       case 'cvv':
         cvvValid = value.match(/^[0-9]{3}/)
-        formErrors.cvvValid = cvvValid ? '' : 'Must be 3 digits.'
+        formErrors.cvv = cvvValid ? '' : 'Must be 3 digits.'
         break
       default:
         break
