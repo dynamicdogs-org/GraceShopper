@@ -41,6 +41,7 @@ const User = db.define('user', {
       return () => this.getDataValue('salt')
     }
   },
+  //Created googleId column for OAuth
   googleId: {
     type: Sequelize.STRING
   }
