@@ -16,12 +16,23 @@ class Payment extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.isComplete = this.isComplete.bind(this)
     this.toggleSubmitted = this.toggleSubmitted.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     })
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    const payment = {
+      nameOnCard: this.state.nameOnCard,
+      cardEndingIn: this.state.cardNumber.slice(-4),
+      expDate: this.state.expDate
+    }
+    this.props.setPayment(payment)
   }
 
   isComplete() {
@@ -40,7 +51,7 @@ class Payment extends Component {
       <div onClick={this.toggleSubmitted}>
         <p>Name: {this.state.nameOnCard}</p>
         <p>
-          Card number: {`**** **** **** ${this.state.cardNumber.slice(12)}`}
+          Card number: {`**** **** **** ${this.state.cardNumber.slice(-4)}`}
         </p>
         <p>Expiration date: {this.state.expDate}</p>
         <p>cvv: *** </p>
@@ -99,6 +110,7 @@ class Payment extends Component {
             color="primary"
             onClick={() => {
               this.toggleSubmitted()
+              this.handleSubmit(event)
             }}
           >
             Review Order
@@ -108,7 +120,5 @@ class Payment extends Component {
     )
   }
 }
-
-//Add payment info to cart?
 
 export default Payment

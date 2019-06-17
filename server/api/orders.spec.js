@@ -44,7 +44,7 @@ describe('Order routes', () => {
 
       const order1 = await Order.create({
         address: '5 Hanover Square, New York',
-        paymentType: 'credit card',
+        paymentDetails: {some: 'details'},
         products: [prod1],
         orderTotal: 2000
       })
@@ -52,6 +52,8 @@ describe('Order routes', () => {
       const order2 = await Order.create({
         address: '820 Macon St',
         paymentType: 'gift card',
+        paymentDetails: {some: 'details'},
+
         products: [prod1, prod2],
         orderTotal: 5022
       })
