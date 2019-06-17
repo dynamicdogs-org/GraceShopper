@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   navBarColor: {}
 }))
 
-const Navbar = ({handleClick, isLoggedIn, userId}) => {
+const Navbar = ({handleClick, isLoggedIn, userId, isAdmin}) => {
   const classes = useStyles()
   return (
     <AppBar position="sticky" className={classes.root}>
@@ -48,6 +48,13 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => {
             <Link color="inherit" component={RouterLink} to="/home">
               <Button color="inherit">My Account</Button>
             </Link>
+
+            {/* Displays Admin Page only when user is an admin */}
+            {isAdmin && (
+              <Link color="inherit" component={RouterLink} to="/adminpage">
+                <Button color="inherit">Admin Page</Button>
+              </Link>
+            )}
 
             <Button color="inherit" onClick={handleClick}>
               Logout
@@ -75,7 +82,8 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => {
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
-    userId: state.user.id
+    userId: state.user.id,
+    isAdmin: state.user.isAdmin
   }
 }
 
