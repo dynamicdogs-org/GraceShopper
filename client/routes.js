@@ -36,10 +36,11 @@ class Routes extends Component {
             {//Check if user is an admin, if admin, displays the admin page when requested
             //if not, then display the not authorized message
             user.isAdmin ? (
-              <Route exact path="/adminpage" component={AdminPage} />
+              <Route path="/adminpage" component={AdminPage} />
             ) : (
-              <Route exact path="/adminpage" component={NotAuthorized} />
+              <Route path="/adminpage" component={NotAuthorized} />
             )}
+            <Route path="/notauthorized" component={NotAuthorized} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

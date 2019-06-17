@@ -112,15 +112,5 @@ describe('Order routes', () => {
       expect(res.body.orderStatus).to.be.equal('processed')
       expect(orderRes.body.orderStatus).to.be.equal('processed')
     })
-
-    it('DELETE /api/users/:userId', async () => {
-      const res = await request(app)
-        .delete('/api/users/1')
-        .expect(204)
-
-      const users = await request(app).get('/api/users')
-
-      expect(users.body.length).to.be.equal(0)
-    })
   }) // end describe('/api/users')
 }) // end describe('User routes')

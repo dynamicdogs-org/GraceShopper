@@ -2,16 +2,11 @@ const {Cart, User, Product} = require('../db/models')
 const router = require('express').Router()
 module.exports = router
 
-//Will create new component for UnAuthorized request
 router.use('/:userId', (req, res, next) => {
   if (!req.user) {
     res.redirect('/login')
   } else if (+req.user.id !== +req.params.userId) {
-    const notAuthrozied = new Error(
-      'You are not authrozied to perform this action. Only an admin is allowed.'
-    )
-    notAuthrozied.status = 401
-    next(notAuthrozied)
+    res.redirect('/notauthorized')
   }
   next()
 })

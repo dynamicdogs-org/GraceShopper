@@ -9,11 +9,7 @@ router.use('/', (req, res, next) => {
     res.redirect('/login')
   } else if (!req.user.isAdmin) {
     //If logged in, but not admin, don't allow access
-    const notAuthrozied = new Error(
-      'You are not authrozied to perform this action. Only an admin is allowed.'
-    )
-    notAuthrozied.status = 401
-    next(notAuthrozied)
+    res.redirect('/notauthorized')
   }
   next()
 })
@@ -50,7 +46,12 @@ router.get('/:userId', async (req, res, next) => {
 //Only available to admin
 router.post('/', async (req, res, next) => {
   try {
-    const user = await User.create(req.body)
+    const user = await User.create({
+      email: req.body.email,
+      password: req.body.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName
+    })
     res.status(201).json(user)
   } catch (error) {
     next(error)
