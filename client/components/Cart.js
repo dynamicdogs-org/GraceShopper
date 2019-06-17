@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {getCartThunk} from '../store/cart'
+import {Link as RouterLink} from 'react-router-dom'
+import Link from '@material-ui/core/Link'
+import {getCartThunk, deleteItemFromCartThunk} from '../store/cart'
 import Button from '@material-ui/core/Button'
-import {deleteItemFromCartThunk} from '../store/cart'
 
 class disconnectedCart extends React.Component {
   componentDidMount = () => {
@@ -19,7 +19,9 @@ class disconnectedCart extends React.Component {
           {cart.map((prod, index) => {
             return (
               <li key={index}>
-                <Link to={`/products/${prod.id}`}>{prod.name}</Link>
+                <Link component={RouterLink} to={`/products/${prod.id}`}>
+                  {prod.name}
+                </Link>
                 <Button
                   size="small"
                   variant="contained"
@@ -35,6 +37,11 @@ class disconnectedCart extends React.Component {
             )
           })}
         </ul>
+        <Link color="inherit" component={RouterLink} to="/cart/checkout">
+          <Button variant="contained" color="secondary">
+            Checkout
+          </Button>
+        </Link>
       </div>
     ) : (
       <div>No products at this time...</div>
