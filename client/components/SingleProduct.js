@@ -22,8 +22,8 @@ const useStyles = makeStyles({
 const SingleProduct = props => {
   const classes = useStyles()
   const {id, name, image, displayPrice, description} = props.product
-  const {userId} = props
-  const {handleAddToCart} = props
+  const {userId, handleAddToCart, handleDeleteProduct, admin} = props
+
   return (
     <Card className={classes.card}>
       <Link
@@ -48,13 +48,31 @@ const SingleProduct = props => {
         </CardActionArea>
       </Link>
       <CardActions>
-        <Button
-          size="small"
-          color="primary"
-          onClick={() => handleAddToCart(userId, id)}
-        >
-          Add To Cart
-        </Button>
+        {/* Display Add to Cart when in All Products Page and display edit/remove product in Admin Page */}
+        {admin === 'true' ? (
+          <React.Fragment>
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => handleDeleteProduct(id)}
+            >
+              Delete Product
+            </Button>
+            <Link color="inherit" component={RouterLink} to={`/products/${id}`}>
+              <Button size="small" color="primary">
+                Edit Product
+              </Button>
+            </Link>
+          </React.Fragment>
+        ) : (
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => handleAddToCart(userId, id)}
+          >
+            Add To Cart
+          </Button>
+        )}
 
         <Link color="inherit" component={RouterLink} to={`/products/${id}`}>
           <Button size="small" color="primary">
