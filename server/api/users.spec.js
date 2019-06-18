@@ -16,7 +16,7 @@ describe('User routes', () => {
   let authSession = session(app)
 
   describe('/api/users/', () => {
-    const codysEmail = 'cody@puppybook.com'
+    const codysEmail = 'cody@puppybook.com';
 
     beforeEach(async () => {
       await User.create({
