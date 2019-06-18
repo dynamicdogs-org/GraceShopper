@@ -91,7 +91,7 @@ router.get('/:orderId', adminOrUser, async (req, res, next) => {
 
 //Route to get all orders that belong to a logged in User. Written by KL
 //URI: /orders/user/:userId
-router.get('/user/:userId', adminOrUser, async (req, res, next) => {
+router.get('/user/:userId', newOrderAdminOrUser, async (req, res, next) => {
   try {
     const userId = Number(req.params.userId)
     const orderHistory = await Order.findAll({

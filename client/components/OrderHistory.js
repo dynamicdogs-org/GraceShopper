@@ -19,7 +19,7 @@ class OrderHistory extends Component {
 
 //mSTP
 const mapStateToProps = state => ({
-  userId: state.user.id
+  userId: state
 })
 
 //mDTP
