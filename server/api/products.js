@@ -4,7 +4,9 @@ const {User, Product} = require('../db/models/')
 //GET Route
 router.get('/', async (req, res, next) => {
   try {
+    //console.log("req.user in get all products api: ", req.user);
     const allProducts = await Product.findAll()
+    //console.log("allProducts in get '/' in products reducer: ", allProducts);
     res.json(allProducts)
   } catch (error) {
     next(error)
