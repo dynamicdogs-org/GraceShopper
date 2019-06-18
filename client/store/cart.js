@@ -55,25 +55,11 @@ export const addItemToCartThunk = (userId, productId) => {
     try {
       //WAS:
       const {data} = await axios.post(`/api/carts/${userId}/${productId}`)
-      //const {data.product, data.quantity} = await axios.post(`/api/carts/${userId}/${productId}`);
-      //const result = await axios.post(`/api/carts/${userId}/${productId}`)
-      //console.log("Result: ", result);
-
       const productAdded = data
-      //const prodId = product.productId
-      //const quantity = data.quantity;
-
-      // console.log('product in addItemToCartThunk: ', product)
-      // console.log('quantity in addItemToCartThunk: ', quantity)
 
       if (productAdded === 0) {
-        console.log("productAdded = 'none'!")
         dispatch(changeQuantity(productId, 1))
       } else {
-        console.log(
-          'Product being dispatched from addItemToCartThunk: ',
-          productAdded
-        )
         dispatch(addItemToCart(productAdded))
       }
     } catch (error) {
@@ -105,26 +91,13 @@ const cartReducer = (state = initialState, action) => {
     }
 
     case CHANGE_QUANTITY: {
-      console.log('CHANGE QUAN REDUCER CALLED! ')
-      console.log('State in change_quantity: ', state)
-      console.log('action.quantity: ', action.quantity)
       const newState = [...state].map(product => {
-        console.log('product: ', product)
-        // console.log('action.prodId: ', action.prodId)
-        // console.log('product.cart.quantity: ', product.quantity)
-        // console.log('Action quantity: ', action.quantity)
         if (product.productId === action.productId) {
-          console.log(
-            'product with matching id found in cart change_quantity reducer!'
-          )
-          //WAS:
-          //product.cart.quantity = action.quantity
           product.cart.quantity = product.cart.quantity + action.quantity
         }
         return product
       })
       return newState
-      // return [...state, {productId: action.prodId, quantity: action.quantity}]
     }
 
     case DELETE_ITEM: {

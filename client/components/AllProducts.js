@@ -22,7 +22,7 @@ const styles = {
 class disconnectedAllProducts extends Component {
   componentDidMount() {
     this.props.getAllProducts()
-    //this.props.getCart(this.props.userId)
+    this.props.getCart(this.props.userId)
   }
 
   handleAddToCart = (userId, productId) => {
