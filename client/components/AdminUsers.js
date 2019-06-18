@@ -29,10 +29,10 @@ class AdminUsers extends React.Component {
         <Typography variant="h6" color="primary" align="center">
           Welcome To Admin Users Page
         </Typography>
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           {users.length ? (
             users.map((user, index) => (
-              <Grid item md={4} key={index}>
+              <Grid item md={6} key={index}>
                 <List>
                   <ListItem>
                     <ListItemAvatar>

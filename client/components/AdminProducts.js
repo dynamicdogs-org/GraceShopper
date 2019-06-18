@@ -6,6 +6,9 @@ import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import {withStyles} from '@material-ui/styles'
+import {Link as RouterLink} from 'react-router-dom'
+import Link from '@material-ui/core/Link'
+import Button from '@material-ui/core/Button'
 
 const styles = {
   root: {
@@ -28,7 +31,6 @@ class disconnectedAdminProducts extends Component {
 
   render() {
     const {products, classes} = this.props
-    console.log(this)
     return products.length ? (
       <Container>
         <Typography
@@ -39,6 +41,23 @@ class disconnectedAdminProducts extends Component {
         >
           Welcome To Admin Products Page
         </Typography>
+        <Typography
+          variant="h6"
+          color="primary"
+          align="center"
+          className={classes.title}
+        >
+          <Link
+            color="inherit"
+            component={RouterLink}
+            to="/adminpage/products/addproduct"
+          >
+            <Button size="small" color="primary">
+              Add Product
+            </Button>
+          </Link>
+        </Typography>
+
         <div className={classes.root}>
           <Grid container spacing={3}>
             {products.map(prod => {

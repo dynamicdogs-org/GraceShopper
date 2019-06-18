@@ -6,6 +6,7 @@ import history from '../history'
  */
 const GET_ALL_USERS = 'GET_ALL_USERS'
 const GET_ALL_ADMIN_PRODUCTS = 'GET_ALL_ADMIN_PRODUCTS'
+const ADD_PRODUCT = 'ADD_PRODUCT'
 const REMOVE_USERS_PRODUCTS = 'REMOVE_USERS_PRODUCTS'
 const DELETE_PRODUCT = 'DELETE_PRODUCT'
 
@@ -30,6 +31,10 @@ export const removeUsersProducts = () => ({type: REMOVE_USERS_PRODUCTS})
 const deleteProduct = prodId => ({
   type: DELETE_PRODUCT,
   prodId
+})
+const addProduct = prod => ({
+  type: ADD_PRODUCT,
+  prod
 })
 
 /**
@@ -62,6 +67,15 @@ export const deleteProductThunk = prodId => async dispatch => {
   }
 }
 
+export const addProductThunk = prod => async dispatch => {
+  try {
+    const {data} = await axios.post('/api/products', prod)
+    dispatch(addProduct(data))
+  } catch (error) {
+    console.log('TCL: error', error)
+  }
+}
+
 /**
  * REDUCER
  */
@@ -73,6 +87,8 @@ export default function(state = initialState, action) {
       return {...state, products: [...action.products]}
     case REMOVE_USERS_PRODUCTS:
       return initialState
+    case ADD_PRODUCT:
+      return {...state, products: [...state.products, action.prod]}
     case DELETE_PRODUCT:
       return {
         ...state,

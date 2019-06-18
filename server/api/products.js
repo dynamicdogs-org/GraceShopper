@@ -43,4 +43,20 @@ router.delete('/:productId', adminOnly, async (req, res, next) => {
   }
 })
 
+router.post('/', adminOnly, async (req, res, next) => {
+  try {
+    const prod = await Product.create({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price * 100,
+      image: req.body.image,
+      tags: req.body.tags,
+      stock: req.body.stock
+    })
+    res.status(201).json(prod)
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router

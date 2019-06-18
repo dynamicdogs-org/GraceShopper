@@ -12,6 +12,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import AdminUsers from './AdminUsers'
 import AdminProducts from './AdminProducts'
+import AdminAddProduct from './AdminAddProduct'
 
 const drawerWidth = 200
 
@@ -70,6 +71,11 @@ const AdminPage = props => {
         <div className={classes.toolbar} />
         <Switch>
           <Route path="/adminpage/users" component={AdminUsers} />
+          <Route
+            exact
+            path="/adminpage/products/addproduct"
+            component={AdminAddProduct}
+          />
           <Route path="/adminpage/products" component={AdminProducts} />
           <Route path="/" render={() => <div>Welcome to admin page</div>} />
         </Switch>
