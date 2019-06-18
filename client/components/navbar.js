@@ -13,7 +13,8 @@ import Button from '@material-ui/core/Button'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    background: '#33eaff'
+    background: '#33eaff',
+    zIndex: theme.zIndex.drawer + 1
   },
   menuButton: {
     marginRight: theme.spacing(2)

@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {getAllProductsThunk} from '../store/product'
-import {addItemToCartThunk} from '../store/cart'
+import {getAllAdminProductsThunk, deleteProductThunk} from '../store/admin'
 import SingleProduct from './SingleProduct'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
@@ -18,20 +17,19 @@ const styles = {
   }
 }
 
-class disconnectedAllProducts extends Component {
+class disconnectedAdminProducts extends Component {
   componentDidMount() {
-    this.props.getAllProducts()
+    this.props.getAllAdminProducts()
   }
 
-  handleAddToCart = (userId, productId) => {
-    this.props.addItem(userId, productId)
+  handleDeleteProduct = prodId => {
+    this.props.deleteProduct(prodId)
   }
 
   render() {
-    const {product, userId} = this.props
-    const {classes} = this.props
-
-    return product.length ? (
+    const {products, classes} = this.props
+    console.log(this)
+    return products.length ? (
       <Container>
         <Typography
           variant="h6"
@@ -39,18 +37,17 @@ class disconnectedAllProducts extends Component {
           align="center"
           className={classes.title}
         >
-          Welcome To Our Products Page!
+          Welcome To Admin Products Page
         </Typography>
         <div className={classes.root}>
           <Grid container spacing={3}>
-            {product.map(prod => {
+            {products.map(prod => {
               return (
                 <Grid item md={4} key={prod.id}>
                   <SingleProduct
                     product={prod}
-                    userId={userId}
-                    handleAddToCart={this.handleAddToCart}
-                    admin="false"
+                    admin="true"
+                    handleDeleteProduct={this.handleDeleteProduct}
                   />
                 </Grid>
               )
@@ -68,23 +65,21 @@ class disconnectedAllProducts extends Component {
 
 const mapStateToProps = function(state) {
   return {
-    product: state.product,
-    userId: state.user.id
+    products: state.admin.products
   }
 }
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    getAllProducts: () => dispatch(getAllProductsThunk()),
-    addItem: (userId, productId) =>
-      dispatch(addItemToCartThunk(userId, productId))
+    getAllAdminProducts: () => dispatch(getAllAdminProductsThunk()),
+    deleteProduct: prodId => dispatch(deleteProductThunk(prodId))
   }
 }
 
 //Connect AllProducts to the Redux Store
-const AllProducts = connect(mapStateToProps, mapDispatchToProps)(
-  disconnectedAllProducts
+const AdminProducts = connect(mapStateToProps, mapDispatchToProps)(
+  disconnectedAdminProducts
 )
 
 //Export Class Component with Material UI Styling
-export default withStyles(styles)(AllProducts)
+export default withStyles(styles)(AdminProducts)
