@@ -13,42 +13,48 @@ describe('User routes', () => {
     return db.sync({force: true})
   })
 
+  let authSession = session(app)
+
   describe('/api/users/', () => {
-    let authSession = session(app)
+    const codysEmail = 'cody@puppybook.com';
 
     beforeEach(async () => {
       await User.create({
-        email: 'cody@puppybook.com',
+        email: codysEmail,
+        password: '123',
         firstName: 'Cody',
         lastName: 'Pug',
-        password: '123',
-        isAdmin: false
+        isAdmin: true
       })
-      await session(app)
+
+      await User.create({
+        email: 'husky2@bark.com',
+        password: 'imahusky2',
+        firstName: 'Husky2',
+        lastName: 'TheDog'
+      })
+
+      await authSession
         .post('/auth/login')
-        .send({email: 'cody@puppybook.com', password: '123'})
+        .send({email: codysEmail, password: '123'})
         .expect(200)
     })
 
-    xit('GET /api/users', async () => {
-      const res = await request(app)
-        .get('/api/users')
-        .expect(200)
+    it('GET /api/users', async () => {
+      const res = await authSession.get('/api/users').expect(200)
 
       expect(res.body).to.be.an('array')
       expect(res.body[0].email).to.be.equal(codysEmail)
     })
 
-    xit('GET /api/users/:userId', async () => {
-      const res = await request(app)
-        .get('/api/users/1')
-        .expect(200)
+    it('GET /api/users/:userId', async () => {
+      const res = await authSession.get('/api/users/1').expect(200)
 
       expect(res.body.email).to.be.equal(codysEmail)
     })
 
-    xit('POST /api/users', async () => {
-      const res = await request(app)
+    it('POST /api/users', async () => {
+      const res = await authSession
         .post('/api/users')
         .send({
           email: 'scooby@doo.com',
@@ -58,29 +64,44 @@ describe('User routes', () => {
         })
         .expect(201)
 
-      const users = await request(app).get('/api/users')
+      const users = await authSession.get('/api/users')
 
-      expect(users.body.length).to.be.equal(2)
+      expect(users.body.length).to.be.equal(3)
       expect(res.body.firstName).to.be.equal('Scooby')
     })
 
-    xit('PUT /api/users/:userId', async () => {
-      const res = await request(app)
+    it('PUT /api/users/:userId', async () => {
+      const res = await authSession
         .put('/api/users/1')
         .send({email: 'codyZ2kool@puppybook.com'})
         .expect(200)
 
-      expect(res.body.email).to.be.equal('codyZ2kool@puppybook.com')
+      const user = await authSession.get('/api/users/1')
+
+      expect(user.body.email).to.be.equal('codyZ2kool@puppybook.com')
     })
 
-    xit('DELETE /api/users/:userId', async () => {
-      const res = await request(app)
-        .delete('/api/users/1')
-        .expect(204)
+    it('DELETE /api/users/:userId', async () => {
+      await authSession.delete('/api/users/2').expect(204)
 
-      const users = await request(app).get('/api/users')
+      const users = await authSession.get('/api/users/')
 
-      expect(users.body.length).to.be.equal(0)
+      expect(users.body).to.be.an('array')
+      expect(users.body.length).to.be.equal(1)
+    })
+
+    it('a non-admin user cannot access routes', async () => {
+      await authSession.post('/auth/logout').expect(302)
+
+      await authSession
+        .post('/auth/login')
+        .send({
+          email: 'husky2@bark.com',
+          password: 'imahusky2'
+        })
+        .expect(200)
+
+      await authSession.get('/api/users').expect(302)
     })
   }) // end describe('/api/users')
 }) // end describe('User routes')
