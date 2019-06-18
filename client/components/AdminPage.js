@@ -13,6 +13,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox'
 import AdminUsers from './AdminUsers'
 import AdminProducts from './AdminProducts'
 import AdminAddProduct from './AdminAddProduct'
+import Typography from '@material-ui/core/Typography'
 
 const drawerWidth = 200
 
@@ -76,7 +77,14 @@ const AdminPage = props => {
             component={AdminAddProduct}
           />
           <Route path="/adminpage/products" component={AdminProducts} />
-          <Route path="/" render={() => <div>Welcome to admin page</div>} />
+          <Route
+            path="/"
+            render={() => (
+              <Typography variant="h4" color="primary" align="center">
+                Welcome To Admin Page
+              </Typography>
+            )}
+          />
         </Switch>
       </main>
     </div>
