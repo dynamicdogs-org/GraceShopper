@@ -40,7 +40,7 @@ const changeQuantity = (prodId, quantity) => {
     }
 }
 
-const emptyCart = userId => {
+export const emptyCart = userId => {
   return {
     type: EMPTY_CART,
     payload: userId
