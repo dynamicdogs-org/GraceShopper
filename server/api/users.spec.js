@@ -89,21 +89,5 @@ describe('User routes', () => {
       expect(users.body).to.be.an('array')
       expect(users.body.length).to.be.equal(1)
     })
-
-    it('non-Admin user cannot access routes', async () => {
-      //admin user logs out:
-      await authSession.post('/auth/logout').expect(302)
-
-      //non-admin user logs in:
-      await authSession
-        .post('/auth/login')
-        .send({
-          email: 'husky2@bark.com',
-          password: 'imahusky2'
-        })
-        .expect(200)
-
-      await authSession.get('/api/users/2').expect(302)
-    })
   }) // end describe('/api/users')
 }) // end describe('User routes')
