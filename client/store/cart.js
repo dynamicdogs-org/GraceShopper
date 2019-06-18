@@ -66,7 +66,7 @@ export const addItemToCartThunk = (userId, productId) => {
       // console.log('product in addItemToCartThunk: ', product)
       // console.log('quantity in addItemToCartThunk: ', quantity)
 
-      if (!productAdded) {
+      if (productAdded === 0) {
         console.log("productAdded = 'none'!")
         dispatch(changeQuantity(productId, 1))
       } else {
@@ -119,7 +119,7 @@ const cartReducer = (state = initialState, action) => {
           )
           //WAS:
           //product.cart.quantity = action.quantity
-          product.quantity = product.quantity + action.quantity
+          product.cart.quantity = product.cart.quantity + action.quantity
         }
         return product
       })

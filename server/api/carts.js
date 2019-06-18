@@ -57,7 +57,7 @@ router.post('/:userId/:productId', async (req, res, next) => {
       //})
       //console.log("prods returned by addToCart: ", prods);
 
-      res.status(201).json({})
+      res.status(201).json(0)
 
       // } else {
       //   res.status(201).send(prod)
