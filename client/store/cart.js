@@ -31,7 +31,7 @@ const deleteItemFromCart = itemId => {
   }
 }
 
-const emptyCart = userId => {
+export const emptyCart = userId => {
   return {
     type: EMPTY_CART,
     payload: userId

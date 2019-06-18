@@ -90,6 +90,7 @@ router.post('/:userId/:productId', async (req, res, next) => {
 
 router.delete('/:userId/:productId', async (req, res, next) => {
   try {
+    console.log('delete single product')
     await Cart.destroy({
       where: {
         userId: req.params.userId,
@@ -104,6 +105,7 @@ router.delete('/:userId/:productId', async (req, res, next) => {
 
 router.delete('/:userId', async (req, res, next) => {
   try {
+    console.log('delete all products')
     await Cart.destroy({
       where: {
         userId: req.params.userId

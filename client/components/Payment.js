@@ -122,7 +122,6 @@ class Payment extends Component {
           prevState.cvvValid
       }
     })
-    console.log(this.state.formErrors)
   }
 
   render() {
