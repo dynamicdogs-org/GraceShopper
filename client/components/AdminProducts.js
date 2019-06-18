@@ -59,10 +59,10 @@ class disconnectedAdminProducts extends Component {
         </Typography>
 
         <div className={classes.root}>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             {products.map(prod => {
               return (
-                <Grid item md={4} key={prod.id}>
+                <Grid item md={6} key={prod.id}>
                   <SingleProduct
                     product={prod}
                     admin="true"

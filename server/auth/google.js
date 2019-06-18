@@ -40,7 +40,6 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
         defaults: {email, firstName, lastName}
       })
         .then(([user]) => done(null, user))
-        .then(([user]) => done(null, user))
         .catch(done)
     }
   )
