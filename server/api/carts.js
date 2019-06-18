@@ -17,7 +17,6 @@ router.get('/:userId', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
     const prods = await user.getProducts()
-
     res.json(prods)
   } catch (error) {
     next(error)
@@ -27,62 +26,27 @@ router.get('/:userId', async (req, res, next) => {
 //Add Item and User to the Cart Table
 router.post('/:userId/:productId', async (req, res, next) => {
   try {
-    //EXAMPLE of findOrCreate
-    //User
-    // .findOrCreate({where: {username: 'sdepold'}, defaults: {job: 'Technical Lead JavaScript'}})
-    // .then(([user, created]) => {
-    //   console.log(user.get({
-    //     plain: true
-    //   }))
-    //   console.log(created)
-
-    //WAS:
-    const [prod, wasCreated] = await Cart.findOrCreate({
+    const [product, wasCreated] = await Cart.findOrCreate({
       // const result = awaitCart.findOrCreate({
       where: {
         userId: req.params.userId,
         productId: req.params.productId
       }
     })
-    console.log('prod: ', prod)
-    console.log('wasCreated: ', wasCreated)
-
     if (wasCreated === false) {
-      console.log('Product quantity: ', prod.quantity)
-      //update quantity in carts model:
-      //instance.increment(['number', 'count'], { by: 2 }) // increment number and count by 2
-      prod.increment(['quantity'], {by: 1})
-      res.status(201).json(prod.quantity)
+      product.increment(['quantity'], {by: 1})
+      res.status(201).json(0)
     } else {
-      res.status(201).send(prod)
+      //THE NEW OBJECT WAS CREATED:
+      const user = await User.findByPk(req.params.userId)
+      let productAdded = await user.getProducts({
+        where: {
+          id: req.params.productId
+        }
+      })
+      productAdded = productAdded[0]
+      res.status(201).json(productAdded)
     }
-
-    // .then(
-    //   (result) => {
-    //     console.log("prod: ", result[0]);
-    //     console.log("wasCreated: ", result[1]);
-    //   }
-    // )
-    // .then((prod, wasCreated) => {
-    //   console.log("prod: ", prod);
-    //   console.log("wasCreated: ", wasCreated);
-    // })
-    // .then ((prod, wasCreated) => {
-    //   console.log(`prod: ${prod}, wasCreated: ${wasCreated}`)
-    // })
-    // .then (//callback with results of request
-    //   (result) => {
-    //     if (wasCreated >= 1) {
-    //       console.log("Product quantity: ", prod.quantity);
-    //       prod.quantity+=1;
-    //     }
-    //   }
-    // )
-    // .then(
-    //   (prod) => {
-    //     res.status(201).json(prod)
-    //   }
-    // )
   } catch (error) {
     next(error)
   }
@@ -115,6 +79,7 @@ router.delete('/:userId', async (req, res, next) => {
   }
 })
 
+//To update cart quantity for a specific product
 router.put('/:userId/:productId', async (req, res, next) => {
   try {
     const [numAffectedRows, [updatedQuantity]] = await Cart.update(

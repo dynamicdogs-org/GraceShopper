@@ -6,7 +6,7 @@ const initialState = []
 const GET_CART = 'GET_CART'
 const DELETE_ITEM = 'DELETE_ITEM'
 const ADD_ITEM = 'ADD_ITEM'
-const CNANGE_QUANTITY = 'CHANGE_QUANTITY'
+const CHANGE_QUANTITY = 'CHANGE_QUANTITY'
 const EMPTY_CART = 'EMPTY_CART'
 
 //ACTION CREATORS:
@@ -31,6 +31,15 @@ const deleteItemFromCart = itemId => {
   }
 }
 
+
+const changeQuantity = (prodId, quantity) => {
+  return {
+    type: CHANGE_QUANTITY,
+    prodId: prodId,
+    quantity: quantity
+    }
+}
+
 const emptyCart = userId => {
   return {
     type: EMPTY_CART,
@@ -53,8 +62,15 @@ export const getCartThunk = userId => {
 export const addItemToCartThunk = (userId, productId) => {
   return async dispatch => {
     try {
+      //WAS:
       const {data} = await axios.post(`/api/carts/${userId}/${productId}`)
-      dispatch(addItemToCart(data))
+      const productAdded = data
+
+      if (productAdded === 0) {
+        dispatch(changeQuantity(productId, 1))
+      } else {
+        dispatch(addItemToCart(productAdded))
+      }
     } catch (error) {
       console.log('TCL: addItemToCartThunk -> error', error)
     }
@@ -89,9 +105,21 @@ const cartReducer = (state = initialState, action) => {
     case GET_CART: {
       return action.payload
     }
+    //OLD:
     case ADD_ITEM: {
       return [...state, action.payload]
     }
+
+    case CHANGE_QUANTITY: {
+      const newState = [...state].map(product => {
+        if (product.productId === action.productId) {
+          product.cart.quantity = product.cart.quantity + action.quantity
+        }
+        return product
+      })
+      return newState
+    }
+
     case DELETE_ITEM: {
       return [...state].filter(elem => elem.id !== action.payload)
     }
