@@ -14,12 +14,14 @@ const User = db.define('user', {
   firstName: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue: 'User',
     validate: {
       notEmpty: true
     }
   },
   lastName: {
     type: Sequelize.STRING,
+    defaultValue: 'User',
     allowNull: false,
     validate: {
       notEmpty: true
@@ -41,8 +43,13 @@ const User = db.define('user', {
       return () => this.getDataValue('salt')
     }
   },
+  //Created googleId column for OAuth
   googleId: {
     type: Sequelize.STRING
+  },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 })
 

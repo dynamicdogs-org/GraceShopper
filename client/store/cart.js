@@ -7,6 +7,7 @@ const GET_CART = 'GET_CART'
 const DELETE_ITEM = 'DELETE_ITEM'
 const ADD_ITEM = 'ADD_ITEM'
 const CHANGE_QUANTITY = 'CHANGE_QUANTITY'
+const EMPTY_CART = 'EMPTY_CART'
 
 //ACTION CREATORS:
 const getCart = products => {
@@ -30,11 +31,19 @@ const deleteItemFromCart = itemId => {
   }
 }
 
+
 const changeQuantity = (prodId, quantity) => {
   return {
     type: CHANGE_QUANTITY,
     prodId: prodId,
     quantity: quantity
+    }
+}
+
+const emptyCart = userId => {
+  return {
+    type: EMPTY_CART,
+    payload: userId
   }
 }
 
@@ -79,6 +88,17 @@ export const deleteItemFromCartThunk = (userId, productId) => {
   }
 }
 
+export const emptyCartThunk = userId => {
+  return async function(dispatch) {
+    try {
+      await axios.delete(`/api/carts/${userId}`)
+      dispatch(emptyCart(userId))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
 //CART REDUCER:
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -101,9 +121,11 @@ const cartReducer = (state = initialState, action) => {
     }
 
     case DELETE_ITEM: {
-      return [...state].filter(elem => elem.id != action.payload)
+      return [...state].filter(elem => elem.id !== action.payload)
     }
-
+    case EMPTY_CART: {
+      return []
+    }
     default:
       return state
   }

@@ -18,7 +18,7 @@ import {makeStyles} from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '90.5vh'
+    height: '90vh'
   },
   image: {
     backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -79,8 +79,33 @@ const AuthForm = props => {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
             />
+
+            {/* Renders First Name and Last Name Input Text when signing up */}
+            {name === 'signup' && (
+              <div>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  name="firstName"
+                  autoComplete="firstName"
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lastName"
+                />
+              </div>
+            )}
             <TextField
               variant="outlined"
               margin="normal"
@@ -159,7 +184,13 @@ const mapDispatch = dispatch => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+      if (formName === 'login') {
+        dispatch(auth(email, password, formName))
+      } else if (formName === 'signup') {
+        const firstName = evt.target.firstName.value
+        const lastName = evt.target.lastName.value
+        dispatch(auth(email, password, formName, firstName, lastName))
+      }
     }
   }
 }

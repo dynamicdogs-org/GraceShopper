@@ -1,81 +1,137 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import history from '../history'
 import {submitOrderThunk} from '../store/order'
 import {getCartThunk} from '../store/cart'
-import OutlinedInput from '@material-ui/core/OutlinedInput'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
-import TextField from '@material-ui/core/TextField'
+import Address from './Address'
+import Payment from './Payment'
 import Button from '@material-ui/core/Button'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Typography from '@material-ui/core/Typography'
 
 class CheckoutForm extends Component {
   constructor() {
     super()
     this.state = {
       address: '',
-      paymentType: ''
+      payment: null
     }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.setAddress = this.setAddress.bind(this)
+    this.setPayment = this.setPayment.bind(this)
+    this.isComplete = this.isComplete.bind(this)
   }
 
   componentDidMount() {
     this.props.getCart(this.props.userId)
   }
 
-  handleChange = event => {
+  handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     })
   }
 
-  handleSubmit = () => {}
+  setAddress(address) {
+    this.setState({address})
+  }
+
+  setPayment(payment) {
+    this.setState({payment})
+  }
+
+  isComplete() {
+    return this.state.address && this.state.payment
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    const cart = this.props.cart
+    const orderTotal = cart.reduce((acc, cur) => {
+      return acc + cur.cart.quantity * cur.price
+    }, 0)
+    const products = cart.map(product => ({
+      product: product.name,
+      unitPrice: product.displayPrice,
+      quantity: product.cart.quantity
+    }))
+    const address = this.state.address
+    const paymentDetails = this.state.payment
+    this.props.submitOrder(
+      {orderTotal, address, paymentDetails, products},
+      this.props.userId
+    )
+    history.push('/home')
+  }
 
   render() {
+    const cart = this.props.cart
+    const address = this.state.address
+    const payment = this.state.payment
     return (
       <div>
-        <h1>CheckoutForm</h1>
-        <form onSubmit={this.handleSubmit}>
-          <TextField
-            // id="outlined-multiline-static"
-            label="Address"
-            name="address"
-            multiline
-            rows="4"
-            value={this.state.address}
-            // className={classes.textField}
-            margin="normal"
-            variant="outlined"
-            onChange={this.handleChange}
-          />
-          <FormControl variant="outlined">
-            <InputLabel
-              // ref={inputLabel}
-              htmlFor="outlined-age-simple"
+        <h1>Checkout</h1>
+        <h3>Shipping address</h3>
+        {address ? (
+          <pre>{address}</pre>
+        ) : (
+          <Address setAddress={this.setAddress} />
+        )}
+
+        {address ? (
+          <div>
+            <h3>Payment</h3>
+            {payment ? (
+              <pre>
+                {`Name on card: ${payment.nameOnCard}
+Card number ending in: ${payment.cardEndingIn}
+Expiration date: ${payment.expDate}`}
+              </pre>
+            ) : (
+              <Payment setPayment={this.setPayment} />
+            )}
+          </div>
+        ) : null}
+        {address && payment ? (
+          <form onSubmit={this.handleSubmit}>
+            <h2>Order summary:</h2>
+            <List disablePadding>
+              {cart.map((product, idx) => {
+                const quantity = product.cart.quantity
+                return (
+                  <ListItem key={idx}>
+                    <ListItemText primary={product.name} />
+                    <ListItemText
+                      secondary={`unit price: ${product.displayPrice}`}
+                    />
+                    <ListItemText secondary={`quantity: ${quantity}`} />
+                    <Typography variant="body2">
+                      {`$${product.price * quantity / 100}`}
+                    </Typography>
+                  </ListItem>
+                )
+              })}
+              <ListItem>
+                <Typography variant="body1">
+                  Total: ${cart.reduce((acc, cur) => {
+                    return acc + cur.cart.quantity * cur.price
+                  }, 0) / 100}
+                </Typography>
+              </ListItem>
+            </List>
+            <Button
+              disabled={!this.isComplete}
+              type="submit"
+              size="medium"
+              color="primary"
             >
-              Payment type
-            </InputLabel>
-            <Select
-              name="paymentType"
-              value={this.state.paymentType}
-              onChange={this.handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="credit card">Credit card</MenuItem>
-              <MenuItem value="gift card">Gift card</MenuItem>
-              <MenuItem value="paypal">Paypal</MenuItem>
-            </Select>
-          </FormControl>
-          <Button
-            size="medium"
-            color="primary"
-            onClick={() => this.handleSubmithandleSubmit()}
-          >
-            Submit order
-          </Button>
-        </form>
+              Submit order
+            </Button>
+          </form>
+        ) : null}
       </div>
     )
   }
@@ -89,7 +145,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCart: userId => dispatch(getCartThunk(userId)),
-  submitOrder: order => dispatch(submitOrderThunk(order))
+  submitOrder: (order, userId) => dispatch(submitOrderThunk(order, userId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutForm)

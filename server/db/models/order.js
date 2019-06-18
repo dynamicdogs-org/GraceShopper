@@ -12,9 +12,14 @@ const Order = db.define('order', {
   paymentType: {
     type: sequelize.ENUM('credit card', 'gift card', 'paypal'),
     allowNull: false,
+    defaultValue: 'credit card',
     validate: {
       notEmpty: true
     }
+  },
+  paymentDetails: {
+    type: sequelize.JSON,
+    allowNull: false
   },
   orderStatus: {
     type: sequelize.ENUM(
@@ -32,6 +37,7 @@ const Order = db.define('order', {
   },
   products: {
     type: sequelize.ARRAY(sequelize.JSON),
+
     allowNull: false,
     validate: {
       notEmpty: true
