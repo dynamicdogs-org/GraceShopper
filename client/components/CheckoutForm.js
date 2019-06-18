@@ -65,48 +65,69 @@ class CheckoutForm extends Component {
 
   render() {
     const cart = this.props.cart
+    const address = this.state.address
+    const payment = this.state.payment
     return (
       <div>
         <h1>Checkout</h1>
         <h3>Shipping address</h3>
-        <Address setAddress={this.setAddress} />
-        <h3>Payment</h3>
-        <Payment setPayment={this.setPayment} />
-        <form onSubmit={this.handleSubmit}>
-          <h2>Order summary:</h2>
-          <List disablePadding>
-            {cart.map((product, idx) => {
-              const quantity = product.cart.quantity
-              return (
-                <ListItem key={idx}>
-                  <ListItemText primary={product.name} />
-                  <ListItemText
-                    secondary={`unit price: ${product.displayPrice}`}
-                  />
-                  <ListItemText secondary={`quantity: ${quantity}`} />
-                  <Typography variant="body2">
-                    {`$${product.price * quantity / 100}`}
-                  </Typography>
-                </ListItem>
-              )
-            })}
-            <ListItem>
-              <Typography variant="body1">
-                Total: ${cart.reduce((acc, cur) => {
-                  return acc + cur.cart.quantity * cur.price
-                }, 0) / 100}
-              </Typography>
-            </ListItem>
-          </List>
-          <Button
-            disabled={!this.isComplete}
-            type="submit"
-            size="medium"
-            color="primary"
-          >
-            Submit order
-          </Button>
-        </form>
+        {address ? (
+          <pre>{address}</pre>
+        ) : (
+          <Address setAddress={this.setAddress} />
+        )}
+
+        {address ? (
+          <div>
+            <h3>Payment</h3>
+            {payment ? (
+              <pre>
+                {`Name on card: ${payment.nameOnCard}
+Card number ending in: ${payment.cardEndingIn}
+Expiration date: ${payment.expDate}`}
+              </pre>
+            ) : (
+              <Payment setPayment={this.setPayment} />
+            )}
+          </div>
+        ) : null}
+        {address && payment ? (
+          <form onSubmit={this.handleSubmit}>
+            <h2>Order summary:</h2>
+            <List disablePadding>
+              {cart.map((product, idx) => {
+                const quantity = product.cart.quantity
+                return (
+                  <ListItem key={idx}>
+                    <ListItemText primary={product.name} />
+                    <ListItemText
+                      secondary={`unit price: ${product.displayPrice}`}
+                    />
+                    <ListItemText secondary={`quantity: ${quantity}`} />
+                    <Typography variant="body2">
+                      {`$${product.price * quantity / 100}`}
+                    </Typography>
+                  </ListItem>
+                )
+              })}
+              <ListItem>
+                <Typography variant="body1">
+                  Total: ${cart.reduce((acc, cur) => {
+                    return acc + cur.cart.quantity * cur.price
+                  }, 0) / 100}
+                </Typography>
+              </ListItem>
+            </List>
+            <Button
+              disabled={!this.isComplete}
+              type="submit"
+              size="medium"
+              color="primary"
+            >
+              Submit order
+            </Button>
+          </form>
+        ) : null}
       </div>
     )
   }
