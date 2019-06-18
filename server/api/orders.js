@@ -32,29 +32,6 @@ const newOrderAdminOrUser = (req, res, next) => {
 //Route to create order for a particular user
 router.post('/user/:userId', newOrderAdminOrUser, async (req, res, next) => {
   try {
-    // const cart = await Cart.findAll({
-    //   where: {
-    //     userId: req.user.id
-    //   }
-    // })
-    // const products = cart.map(async product => {
-    //   const productData = await Product.findByPk(product.productId, {
-    //     attributes: ['name', 'displayPrice', 'price']
-    //   })
-    //   return {...productData, quantity: product.quantity}
-    // })
-    // const orderTotal = products.reduce(
-    //   (acc, cur) => acc + cur.price * cur.quantity
-    // )
-    // const address = req.body.address
-    // const paymentType = req.body.paymentType
-    // const order = await Order.create({
-    //   address,
-    //   paymentType,
-    //   orderTotal,
-    //   products
-    // })
-
     const order = await Order.create({
       userId: req.user.id,
       paymentDetails: req.body.paymentDetails,

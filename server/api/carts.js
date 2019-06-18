@@ -5,10 +5,12 @@ module.exports = router
 router.use('/:userId', (req, res, next) => {
   if (!req.user) {
     res.redirect('/login')
-  } else if (+req.user.id !== +req.params.userId) {
+  } else if (+req.user.id === +req.params.userId || req.user.isAdmin) {
+    console.log('Am I an admin? ', req.user.isAdmin)
+    next()
+  } else {
     res.redirect('/notauthorized')
   }
-  next()
 })
 
 //Get All Cart Info for a particular user

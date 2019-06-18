@@ -29,7 +29,8 @@ describe('Cart routes', () => {
         email: 'husky2@bark.com',
         password: 'imahusky2',
         firstName: 'Husky2',
-        lastName: 'TheDog'
+        lastName: 'TheDog',
+        isAdmin: true
       })
 
       await authSession
@@ -126,6 +127,36 @@ describe('Cart routes', () => {
       const cart = await authSession.get('/api/carts/1')
 
       expect(cart.body.length).to.be.equal(0)
+    })
+
+    it('GET, POST, PUT, DELETE routes are accessible by Admin user', async () => {
+      //regular user logs out:
+      await authSession.post('/auth/logout').expect(302)
+
+      //admin user logs in:
+      await authSession
+        .post('/auth/login')
+        .send({
+          email: 'husky2@bark.com',
+          password: 'imahusky2'
+        })
+        .expect(200)
+
+      const initialCart = await authSession.get('/api/carts/1').expect(200)
+
+      await authSession
+        .put('/api/carts/1/2')
+        .send({quantity: 10})
+        .expect(200)
+      await authSession.delete('/api/carts/1/3').expect(204)
+
+      const updatedCart = await authSession.get('/api/carts/1').expect(200)
+
+      expect(initialCart.body.length).to.be.equal(2)
+      expect(initialCart.body[0].cart.quantity).to.be.equal(1)
+
+      expect(updatedCart.body.length).to.be.equal(1)
+      expect(updatedCart.body[0].cart.quantity).to.be.equal(10)
     })
   }) // end describe('/api/carts')
 }) // end describe('Carts routes')
