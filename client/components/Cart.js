@@ -2,8 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link as RouterLink} from 'react-router-dom'
 import Link from '@material-ui/core/Link'
-import {getCartThunk, deleteItemFromCartThunk} from '../store/cart'
 import Button from '@material-ui/core/Button'
+import {getCartThunk, deleteItemFromCartThunk} from '../store/cart'
 
 class disconnectedCart extends React.Component {
   componentDidMount = () => {
