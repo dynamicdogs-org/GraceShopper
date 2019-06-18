@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import connect from 'react-redux'
+import {connect} from 'react-redux'
 import orderHistoryThunk from '../store/orderHistory'
 
 class OrderHistory extends Component {
@@ -11,6 +11,7 @@ class OrderHistory extends Component {
     return (
       <div>
         <h1>User Order History</h1>
+        <h3>{this.props.order}</h3>
       </div>
     )
   }

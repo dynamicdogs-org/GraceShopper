@@ -13,7 +13,7 @@ const gotOrderHistory = data => ({
 export const orderHistoryThunk = function(userId) {
   return async function(dispatch) {
     try {
-      const {data} = await axios.get(`/api/orders/${userId}`)
+      const {data} = await axios.get(`/api/orders/user/${userId}`)
       dispatch(gotOrderHistory(data))
     } catch (error) {
       console.error(error)
