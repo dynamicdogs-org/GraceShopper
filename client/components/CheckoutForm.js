@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import history from '../history'
+import {Link as RouterLink} from 'react-router-dom'
 import {submitOrderThunk} from '../store/order'
 import {getCartThunk} from '../store/cart'
 import Address from './Address'
 import Payment from './Payment'
+
+import Link from '@material-ui/core/Link'
 import Button from '@material-ui/core/Button'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -64,16 +66,27 @@ class CheckoutForm extends Component {
       {orderTotal, address, paymentDetails, products},
       this.props.userId
     )
-    history.push('/home')
+    this.setState({submitted: true})
   }
 
   render() {
     const cart = this.props.cart
     const address = this.state.address
     const payment = this.state.payment
+    const submitted = this.state.submitted
     return (
       <div>
-        <h1>Checkout</h1>
+        {submitted ? (
+          <div>
+            <h1>Order submitted</h1>
+            <p>
+              Thank you for your order! Your order is being processed and you
+              will receive an email confirmation shortly.
+            </p>
+          </div>
+        ) : (
+          <h1>Checkout</h1>
+        )}
         <h3>Shipping address</h3>
         {address ? (
           <pre>{address}</pre>
@@ -122,14 +135,23 @@ Expiration date: ${payment.expDate}`}
                 </Typography>
               </ListItem>
             </List>
-            <Button
-              disabled={!this.isComplete}
-              type="submit"
-              size="medium"
-              color="primary"
-            >
-              Submit order
-            </Button>
+            {submitted ? (
+              <Link color="inherit" component={RouterLink} to="/home">
+                <Button variant="contained" color="default">
+                  Return to home page
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                disabled={!this.isComplete}
+                type="submit"
+                size="medium"
+                color="secondary"
+                variant="contained"
+              >
+                Submit order
+              </Button>
+            )}
           </form>
         ) : null}
       </div>

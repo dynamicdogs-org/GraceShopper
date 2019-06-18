@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {emptyCart} from './cart'
 
 //action type
 const SUBMIT_ORDER = 'SUBMIT_ORDER'
@@ -16,7 +17,10 @@ export const submitOrderThunk = function(order, userId) {
   return async function(dispatch) {
     try {
       const {data} = await axios.post(`/api/orders/user/${userId}`, order)
-      dispatch(submitOrder(data))
+      if (data) {
+        await axios.delete(`/api/carts/${userId}`)
+        dispatch(emptyCart(userId))
+      }
     } catch (error) {
       console.error(error)
     }
