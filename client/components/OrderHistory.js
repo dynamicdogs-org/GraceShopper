@@ -8,10 +8,10 @@ class OrderHistory extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div>
         <h1>User Order History</h1>
-        <h3>{this.props.order}</h3>
       </div>
     )
   }
@@ -19,7 +19,8 @@ class OrderHistory extends Component {
 
 //mSTP
 const mapStateToProps = state => ({
-  userId: state
+  userId: state.user.id,
+  orderHistory: state
 })
 
 //mDTP

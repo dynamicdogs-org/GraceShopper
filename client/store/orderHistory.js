@@ -28,7 +28,7 @@ const initialState = []
 const orderHistoryReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ORDER_HISTORY:
-      return action.payload
+      return [...state, action.payload]
     default:
       return state
   }
