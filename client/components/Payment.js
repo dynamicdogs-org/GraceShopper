@@ -46,6 +46,16 @@ class Payment extends Component {
     this.props.setPayment(payment)
   }
 
+  handleSubmit(event) {
+    event.preventDefault()
+    const payment = {
+      nameOnCard: this.state.nameOnCard,
+      cardEndingIn: this.state.cardNumber.slice(-4),
+      expDate: this.state.expDate
+    }
+    this.props.setPayment(payment)
+  }
+
   isComplete() {
     const {nameOnCard, cardNumber, expDate, cvv} = this.state
     return nameOnCard && cardNumber && expDate && cvv

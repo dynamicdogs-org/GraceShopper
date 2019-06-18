@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import history from '../history'
 import {submitOrderThunk} from '../store/order'
 import {getCartThunk} from '../store/cart'
 import Address from './Address'
 import Payment from './Payment'
-
 import Button from '@material-ui/core/Button'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -60,7 +60,11 @@ class CheckoutForm extends Component {
     }))
     const address = this.state.address
     const paymentDetails = this.state.payment
-    this.props.submitOrder({orderTotal, address, paymentDetails, products})
+    this.props.submitOrder(
+      {orderTotal, address, paymentDetails, products},
+      this.props.userId
+    )
+    history.push('/home')
   }
 
   render() {
@@ -141,7 +145,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCart: userId => dispatch(getCartThunk(userId)),
-  submitOrder: order => dispatch(submitOrderThunk(order))
+  submitOrder: (order, userId) => dispatch(submitOrderThunk(order, userId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutForm)
