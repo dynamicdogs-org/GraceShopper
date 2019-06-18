@@ -59,20 +59,22 @@ export const addItemToCartThunk = (userId, productId) => {
       //const result = await axios.post(`/api/carts/${userId}/${productId}`)
       //console.log("Result: ", result);
 
-      const product = data.product
-      const prodId = product.productId
-      const quantity = data.quantity
+      const productAdded = data
+      //const prodId = product.productId
+      //const quantity = data.quantity;
 
-      console.log('product: ', product)
-      console.log('quantity: ', quantity)
+      // console.log('product in addItemToCartThunk: ', product)
+      // console.log('quantity in addItemToCartThunk: ', quantity)
 
-      if (quantity) {
-        dispatch(changeQuantity(prodId, quantity))
-        console.log("Quantity isn't null!")
+      if (!productAdded) {
+        console.log("productAdded = 'none'!")
+        dispatch(changeQuantity(productId, 1))
       } else {
-        console.log('Product being dispatched from add to cart: ', product)
-        dispatch(addItemToCart(product))
-        console.log('ELSE')
+        console.log(
+          'Product being dispatched from addItemToCartThunk: ',
+          productAdded
+        )
+        dispatch(addItemToCart(productAdded))
       }
     } catch (error) {
       console.log('TCL: addItemToCartThunk -> error', error)
@@ -101,24 +103,27 @@ const cartReducer = (state = initialState, action) => {
     case ADD_ITEM: {
       return [...state, action.payload]
     }
+
     case CHANGE_QUANTITY: {
       console.log('CHANGE QUAN REDUCER CALLED! ')
       console.log('State in change_quantity: ', state)
       console.log('action.quantity: ', action.quantity)
-      const newState = state.map(product => {
-        console.log('product: ', product.id)
-        console.log('action.prodId: ', action.prodId)
-        console.log('product.cart.quantity: ', product.cart.quantity)
-        console.log('Action quantity: ', action.quantity)
-        if (product.id === action.prodId) {
+      const newState = [...state].map(product => {
+        console.log('product: ', product)
+        // console.log('action.prodId: ', action.prodId)
+        // console.log('product.cart.quantity: ', product.quantity)
+        // console.log('Action quantity: ', action.quantity)
+        if (product.productId === action.productId) {
           console.log(
             'product with matching id found in cart change_quantity reducer!'
           )
-          product.cart.quantity = action.quantity
+          //WAS:
+          //product.cart.quantity = action.quantity
+          product.quantity = product.quantity + action.quantity
         }
         return product
       })
-      return [newState]
+      return newState
       // return [...state, {productId: action.prodId, quantity: action.quantity}]
     }
 

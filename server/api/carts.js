@@ -20,7 +20,7 @@ router.get('/:userId', async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
     const prods = await user.getProducts()
-
+    console.log('getCart prods returned: ', prods)
     res.json(prods)
   } catch (error) {
     next(error)
@@ -30,31 +30,53 @@ router.get('/:userId', async (req, res, next) => {
 //Add Item and User to the Cart Table
 router.post('/:userId/:productId', async (req, res, next) => {
   try {
-    const [prod, wasCreated] = await Cart.findOrCreate({
+    console.log('ROUTER.POST API WAS CALLED!')
+    const [product, wasCreated] = await Cart.findOrCreate({
       // const result = awaitCart.findOrCreate({
       where: {
         userId: req.params.userId,
         productId: req.params.productId
       }
     })
-    console.log('prod: ', prod)
+    //console.log('product in router.post: ', product)
     console.log('wasCreated: ', wasCreated)
 
     if (wasCreated === false) {
-      console.log('Product quantity: ', prod.quantity)
+      console.log('wasCreated = false')
+      console.log('Product quantity: ', product.quantity)
       //update quantity in carts model:
       //instance.increment(['number', 'count'], { by: 2 }) // increment number and count by 2
-      console.log('prod.quantity before increment: ', prod.quantity)
-      const new_prod = prod.increment(['quantity'], {by: 1})
-      console.log('Prod.quantity after increment', new_prod.quantity)
+      //console.log('product.quantity before increment: ', product.quantity)
+      product.increment(['quantity'], {by: 1})
+      //console.log('Product.quantity after increment', new_prod.quantity)
+      // const user = await User.findByPk(req.params.userId)
+      // const prods = await user.getProducts({
+      //   where: {
+      //     id: productId,
+      //   }
+      //})
+      //console.log("prods returned by addToCart: ", prods);
 
-      res.status(201).json({product: prod, quantity: prod.quantity + 1})
+      res.status(201).json({})
 
       // } else {
       //   res.status(201).send(prod)
     } else {
-      // res.status(201).json({product: prod, quantity: prod.quantity})
-      res.status(201).json({product: prod, quantity: null})
+      //THE NEW OBJECT WAS CREATED:
+
+      const user = await User.findByPk(req.params.userId)
+      let productAdded = await user.getProducts({
+        where: {
+          id: req.params.productId
+        }
+      })
+      productAdded = productAdded[0]
+
+      console.log(
+        'productAdded.cart returned by addToCart: ',
+        productAdded.cart
+      )
+      res.status(201).json(productAdded)
     }
 
     // .then(
