@@ -7,6 +7,9 @@ router.use('/:userId', (req, res, next) => {
   if (!req.user) {
     res.redirect('/login')
   } else if (+req.user.id !== +req.params.userId) {
+    console.log('in cart API security middleware:::::: ')
+    console.log('req.user.id', req.user.id)
+    console.log('req.params.userId', req.params.userId)
     res.send('You are not authorized to perform this action')
   }
   next()
@@ -41,10 +44,11 @@ router.post('/:userId/:productId', async (req, res, next) => {
       console.log('Product quantity: ', prod.quantity)
       //update quantity in carts model:
       //instance.increment(['number', 'count'], { by: 2 }) // increment number and count by 2
-      prod.increment(['quantity'], {by: 1})
-      console.log('Prod.quantity', prod.quantity)
+      console.log('prod.quantity before increment: ', prod.quantity)
+      const new_prod = prod.increment(['quantity'], {by: 1})
+      console.log('Prod.quantity after increment', new_prod.quantity)
 
-      res.status(201).json({product: prod, quantity: prod.quantity})
+      res.status(201).json({product: prod, quantity: prod.quantity + 1})
 
       // } else {
       //   res.status(201).send(prod)
@@ -111,6 +115,7 @@ router.delete('/:userId', async (req, res, next) => {
   }
 })
 
+//To update cart quantity for a specific product
 router.put('/:userId/:productId', async (req, res, next) => {
   try {
     const [numAffectedRows, [updatedQuantity]] = await Cart.update(

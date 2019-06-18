@@ -6,7 +6,7 @@ const initialState = []
 const GET_CART = 'GET_CART'
 const DELETE_ITEM = 'DELETE_ITEM'
 const ADD_ITEM = 'ADD_ITEM'
-const CNANGE_QUANTITY = 'CHANGE_QUANTITY'
+const CHANGE_QUANTITY = 'CHANGE_QUANTITY'
 
 //ACTION CREATORS:
 const getCart = products => {
@@ -30,10 +30,11 @@ const deleteItemFromCart = itemId => {
   }
 }
 
-const changeQuantity = quantity => {
+const changeQuantity = (prodId, quantity) => {
   return {
     type: CHANGE_QUANTITY,
-    payload: quantity
+    prodId: prodId,
+    quantity: quantity
   }
 }
 
@@ -59,13 +60,14 @@ export const addItemToCartThunk = (userId, productId) => {
       //console.log("Result: ", result);
 
       const product = data.product
+      const prodId = product.productId
       const quantity = data.quantity
 
       console.log('product: ', product)
       console.log('quantity: ', quantity)
 
       if (quantity) {
-        // dispatch(changeQuantity(quantity))
+        dispatch(changeQuantity(prodId, quantity))
         console.log("Quantity isn't null!")
       } else {
         console.log('Product being dispatched from add to cart: ', product)
@@ -96,9 +98,30 @@ const cartReducer = (state = initialState, action) => {
       return action.payload
     }
     //OLD:
-    // case ADD_ITEM: {
-    //   return [...state, action.payload]
-    // }
+    case ADD_ITEM: {
+      return [...state, action.payload]
+    }
+    case CHANGE_QUANTITY: {
+      console.log('CHANGE QUAN REDUCER CALLED! ')
+      console.log('State in change_quantity: ', state)
+      console.log('action.quantity: ', action.quantity)
+      const newState = state.map(product => {
+        console.log('product: ', product.id)
+        console.log('action.prodId: ', action.prodId)
+        console.log('product.cart.quantity: ', product.cart.quantity)
+        console.log('Action quantity: ', action.quantity)
+        if (product.id === action.prodId) {
+          console.log(
+            'product with matching id found in cart change_quantity reducer!'
+          )
+          product.cart.quantity = action.quantity
+        }
+        return product
+      })
+      return [newState]
+      // return [...state, {productId: action.prodId, quantity: action.quantity}]
+    }
+
     case DELETE_ITEM: {
       return [...state].filter(elem => elem.id != action.payload)
     }
