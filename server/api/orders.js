@@ -69,7 +69,7 @@ router.post('/user/:userId', newOrderAdminOrUser, async (req, res, next) => {
 })
 
 //Route to get all orders info
-//Only allow admins to retrieve all orders
+//Only allow admins to retrieve all orders in orders model
 router.get('/', adminOnly, async (req, res, next) => {
   try {
     const orders = await Order.findAll()
@@ -79,11 +79,27 @@ router.get('/', adminOnly, async (req, res, next) => {
   }
 })
 
-//Route to get a particular order info
+//Route to get a single/particular order info that belongs to a user
 router.get('/:orderId', adminOrUser, async (req, res, next) => {
   try {
     const order = await Order.findByPk(req.params.orderId)
     res.status(200).json(order)
+  } catch (error) {
+    next(error)
+  }
+})
+
+//Route to get all orders that belong to a logged in User. Written by KL
+//URI: /orders/:userId
+router.get('/:userId', async (req, res, next) => {
+  try {
+    const userId = Number(req.params.userId)
+    const orderHistory = await Order.findAll({
+      where: {
+        userId: userId
+      }
+    })
+    res.json(orderHistory)
   } catch (error) {
     next(error)
   }
