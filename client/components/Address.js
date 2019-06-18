@@ -97,10 +97,8 @@ class Address extends Component {
   handleSubmit(event) {
     event.preventDefault()
     const address = `${this.state.firstName} ${this.state.lastName}
-    ${this.state.address1} ${
-      this.state.address2 ? '\n' + this.state.address2 : ''
-    }
-    ${this.state.city}, ${this.state.state} ${this.state.zip}`
+${this.state.address1} ${this.state.address2 ? '\n' + this.state.address2 : ''}
+${this.state.city}, ${this.state.state} ${this.state.zip}`
     this.props.setAddress(address)
   }
 
