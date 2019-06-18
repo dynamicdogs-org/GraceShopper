@@ -14,14 +14,14 @@ const User = db.define('user', {
   firstName: {
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: 'Please enter your first name.',
+    defaultValue: 'User',
     validate: {
       notEmpty: true
     }
   },
   lastName: {
     type: Sequelize.STRING,
-    defaultValue: 'Please enter your last name',
+    defaultValue: 'User',
     allowNull: false,
     validate: {
       notEmpty: true
