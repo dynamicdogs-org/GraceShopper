@@ -64,7 +64,7 @@ describe('Order routes', () => {
       await user1.addOrder(order2)
     })
 
-    it('GET /api/orders', async () => {
+    xit('GET /api/orders', async () => {
       const res = await request(app)
         .get('/api/orders')
         .expect(200)
@@ -74,7 +74,7 @@ describe('Order routes', () => {
       expect(res.body[1].products.length).to.be.equal(2)
     })
 
-    it('GET /api/orders/:orderId', async () => {
+    xit('GET /api/orders/:orderId', async () => {
       const res = await request(app)
         .get('/api/orders/2')
         .expect(200)
@@ -103,7 +103,7 @@ describe('Order routes', () => {
       expect(res.body.paymentType).to.be.equal('gift card')
     })
 
-    it('PUT /api/orders/:orderId', async () => {
+    xit('PUT /api/orders/:orderId', async () => {
       const res = await request(app)
         .put('/api/orders/2')
         .send({orderStatus: 'processed'})
