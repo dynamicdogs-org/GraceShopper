@@ -13,7 +13,7 @@ class OrderSummary extends Component {
   }
 
   render() {
-    console.log(this.props.orders)
+    console.log('props orders', this.props.orders)
     const orders = this.props.orders
     return (
       <div>

@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 
 const OrderProduct = props => {
   const products = props.products
+  console.log(props)
   return (
     <List disablePadding>
       <div>

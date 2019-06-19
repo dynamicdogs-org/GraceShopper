@@ -16,6 +16,7 @@ import AllProduct from './components/AllProducts'
 import Cart from './components/Cart.js'
 import CheckoutForm from './components/CheckoutForm'
 import OrderSummary from './components/OrderSummary'
+import OrderProduct from './components/OrderProduct'
 
 /*
  * COMPONENT
@@ -41,6 +42,7 @@ class Routes extends Component {
             <Route exact path={`/cart/${user.id}`} component={Cart} />
             <Route exact path="/products" component={AllProduct} />
             <Route exact path="/cart/checkout" component={CheckoutForm} />
+            {/* Temporary route for testing purposes */}
             <Route exact path="/temporary" component={OrderSummary} />
             <Route
               exact

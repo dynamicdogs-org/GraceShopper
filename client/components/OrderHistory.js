@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {orderHistoryThunk} from '../store/orderHistory'
 import {Link} from 'react-router-dom'
+import OrderSummary from './OrderSummary'
 
 class OrderHistory extends Component {
   componentDidMount = () => {
@@ -14,7 +15,7 @@ class OrderHistory extends Component {
       <div>
         <h1>User Order History</h1>
         <h5>User ID: {this.props.userId}</h5>
-        <ul>
+        {/* <ul>
           {this.props.orderHistory.map((singleOrder, index) => {
             console.log('singleOrder', singleOrder)
             // return (
@@ -28,7 +29,8 @@ class OrderHistory extends Component {
             // </ul>
             // )
           })}
-        </ul>
+        </ul> */}
+        <OrderSummary />
       </div>
     )
   }
