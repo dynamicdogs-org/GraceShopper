@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getAllProductsThunk} from '../store/product'
 import {addItemToCartThunk, getCartThunk} from '../store/cart'
+
 import SingleProduct from './SingleProduct'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
@@ -21,7 +22,6 @@ const styles = {
 class disconnectedAllProducts extends Component {
   componentDidMount() {
     this.props.getAllProducts()
-    // this.props.getCart(this.props.userId)
   }
 
   handleAddToCart = (userId, productId) => {
@@ -46,11 +46,12 @@ class disconnectedAllProducts extends Component {
           <Grid container spacing={3}>
             {product.map(prod => {
               return (
-                <Grid item xs={4} key={prod.id}>
+                <Grid item md={4} key={prod.id}>
                   <SingleProduct
                     product={prod}
                     userId={userId}
                     handleAddToCart={this.handleAddToCart}
+                    admin="false"
                   />
                 </Grid>
               )
@@ -77,8 +78,7 @@ const mapDispatchToProps = function(dispatch) {
   return {
     getAllProducts: () => dispatch(getAllProductsThunk()),
     addItem: (userId, productId) =>
-      dispatch(addItemToCartThunk(userId, productId)),
-    getCart: userId => dispatch(getCartThunk(userId))
+      dispatch(addItemToCartThunk(userId, productId))
   }
 }
 

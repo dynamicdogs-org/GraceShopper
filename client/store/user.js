@@ -1,5 +1,6 @@
 import axios from 'axios'
 import history from '../history'
+import {removeUsersProducts} from './admin'
 
 /**
  * ACTION TYPES
@@ -61,6 +62,8 @@ export const logout = () => async dispatch => {
   try {
     await axios.post('/auth/logout')
     dispatch(removeUser())
+    //Remove the admin user/product state when logged out
+    dispatch(removeUsersProducts())
     history.push('/login')
   } catch (err) {
     console.error(err)
