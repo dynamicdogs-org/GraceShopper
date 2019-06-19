@@ -5,6 +5,7 @@ import {submitOrderThunk} from '../store/order'
 import {getCartThunk} from '../store/cart'
 import Address from './Address'
 import Payment from './Payment'
+import OrderSummary from './OrderSummary'
 import Button from '@material-ui/core/Button'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -98,30 +99,7 @@ Expiration date: ${payment.expDate}`}
         {address && payment ? (
           <form onSubmit={this.handleSubmit}>
             <h2>Order summary:</h2>
-            <List disablePadding>
-              {cart.map((product, idx) => {
-                const quantity = product.cart.quantity
-                return (
-                  <ListItem key={idx}>
-                    <ListItemText primary={product.name} />
-                    <ListItemText
-                      secondary={`unit price: ${product.displayPrice}`}
-                    />
-                    <ListItemText secondary={`quantity: ${quantity}`} />
-                    <Typography variant="body2">
-                      {`$${product.price * quantity / 100}`}
-                    </Typography>
-                  </ListItem>
-                )
-              })}
-              <ListItem>
-                <Typography variant="body1">
-                  Total: ${cart.reduce((acc, cur) => {
-                    return acc + cur.cart.quantity * cur.price
-                  }, 0) / 100}
-                </Typography>
-              </ListItem>
-            </List>
+            <OrderSummary />
             <Button
               disabled={!this.isComplete}
               type="submit"

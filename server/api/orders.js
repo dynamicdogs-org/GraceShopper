@@ -105,6 +105,18 @@ router.get('/user/:userId', newOrderAdminOrUser, async (req, res, next) => {
   }
 })
 
+router.get('/user/:userId', newOrderAdminOrUser, async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: {userId: req.params.userId}
+    })
+
+    res.status(200).json(orders)
+  } catch (error) {
+    next(error)
+  }
+})
+
 //Route to update order status
 router.put('/:orderId', adminOrUser, async (req, res, next) => {
   try {

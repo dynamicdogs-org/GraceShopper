@@ -13,6 +13,7 @@ const gotOrderHistory = data => ({
 export const orderHistoryThunk = function(userId) {
   return async function(dispatch) {
     try {
+      console.log('orderHistoryThunk invoked!')
       const {data} = await axios.get(`/api/orders/user/${userId}`)
       dispatch(gotOrderHistory(data))
     } catch (error) {
@@ -28,7 +29,7 @@ const initialState = []
 const orderHistoryReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ORDER_HISTORY:
-      return [...state, action.payload]
+      return action.payload
     default:
       return state
   }

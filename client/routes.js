@@ -2,12 +2,20 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, AdminPage, NotAuthorized} from './components'
+import {
+  Login,
+  Signup,
+  UserHome,
+  AdminPage,
+  NotAuthorized,
+  OrderHistory
+} from './components'
 import {me} from './store'
 import SingleProductDetail from './components/SingleProductDetail'
 import AllProduct from './components/AllProducts'
 import Cart from './components/Cart.js'
 import CheckoutForm from './components/CheckoutForm'
+import OrderSummary from './components/OrderSummary'
 
 /*
  * COMPONENT
@@ -33,7 +41,12 @@ class Routes extends Component {
             <Route exact path={`/cart/${user.id}`} component={Cart} />
             <Route exact path="/products" component={AllProduct} />
             <Route exact path="/cart/checkout" component={CheckoutForm} />
-            <Route exact path={`/orders/user/${user.id}`} />
+            <Route exact path="/temporary" component={OrderSummary} />
+            <Route
+              exact
+              path={`/orders/user/${user.id}`}
+              component={OrderHistory}
+            />
             {//Check if user is an admin, if admin, displays the admin page when requested
             //if not, then display the not authorized message
             user.isAdmin ? (
