@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getAllProductsThunk} from '../store/product'
-import {addItemToCartThunk} from '../store/cart'
+import {addItemToCartThunk, getCartThunk} from '../store/cart'
+
 import SingleProduct from './SingleProduct'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
