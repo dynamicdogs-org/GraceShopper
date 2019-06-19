@@ -26,7 +26,7 @@ class disconnectedCart extends React.Component {
       <Container>
         <List>
           <Typography variant="h5" align="center">
-            Your Cart is Empty!
+            Shopping Cart
           </Typography>
           <Grid container spacing={2}>
             {cart.map((prod, index) => {
